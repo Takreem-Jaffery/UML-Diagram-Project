@@ -17,7 +17,7 @@ public class ClassDiagramUI extends JFrame {
 
     UMLCanvas canvas;
     JLabel mouseCoords;
-    UMLClass umlClassPanel;
+    UseCaseUI.UseCaseDiagram umlClassDiagramPanel;
     public ClassDiagramUI() {
         pageTitlePanel = new JPanel();
         elementsPanel = new JPanel();
@@ -25,7 +25,7 @@ public class ClassDiagramUI extends JFrame {
         canvasPanel = new JPanel();
         leftPanel = new JPanel();
         bottomPanel=new JPanel();
-        umlClassPanel=new UMLClass();
+        umlClassDiagramPanel= new UseCaseUI.UseCaseDiagram();
 
         pageTitle = new JLabel("UML Class Diagram");
         pageTitle.setForeground(Color.white);
