@@ -34,7 +34,6 @@ public class ResizableMoveableArrows extends JFrame {
         this.setVisible(true);
     }
 
-    // Canvas to display draggable, resizable, editable, and deletable components
     public class UMLCanvas extends JPanel {
         private ArrayList<UMLComponent> components;
         private UMLComponent selectedComponent;
