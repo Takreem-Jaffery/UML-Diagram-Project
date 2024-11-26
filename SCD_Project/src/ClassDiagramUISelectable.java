@@ -1,9 +1,10 @@
-import org.example.ResizeableClassAndCommentUI;
+import org.example.ResizableMoveableArrows;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ClassDiagramUISelectable extends JFrame {
     JPanel pageTitlePanel;
@@ -38,64 +39,26 @@ public class ClassDiagramUISelectable extends JFrame {
     public class UMLCanvas extends JPanel {
         private ArrayList<UMLComponent> components;
         private UMLComponent selectedComponent;
-        private boolean resizingLine;
-        private boolean resizingRect;
-        private boolean dragging;
-        private int offsetX;
-        private int offsetY;
+        private boolean resizing;
 
         public UMLCanvas() {
             components = new ArrayList<>();
             selectedComponent = null;
-            resizingRect=false;
-            resizingLine=false;
-            dragging=false;
+            resizing=false;
 
             // Add mouse listeners for interaction
             this.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    Point point = e.getPoint();
-                    selectComponentAt(point);
-                    if (selectedComponent != null) {
-                        if (selectedComponent.isInResizeHandle(point)) {
-                            resizingLine = true;
-                        } else if (selectedComponent.isOnResizeEdge(point)) {
-                            resizingRect = true;
-                        } else {
-                            dragging = true;
-                            offsetX = point.x - selectedComponent.start.x;
-                            offsetY = point.y - selectedComponent.start.y;
-                        }
+                    selectComponentAt(e.getPoint());
+                    if (selectedComponent != null && (selectedComponent.type!="Class" &&selectedComponent.type!="Comment") && selectedComponent.isInResizeHandle(e.getPoint())) {
+                        resizing = true;
                     }
                 }
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    Point point = e.getPoint();
 
-                    if (resizingRect && selectedComponent != null) {
-                        selectedComponent.resizeRect(point);
-                        repaint();
-                    }else if (resizingLine && selectedComponent != null) {
-
-                        selectedComponent.resizeLine(point);
-                        repaint();
-                    }
-                    else if (dragging && selectedComponent != null) {
-                        selectedComponent.start.x = point.x - offsetX;
-                        selectedComponent.start.y = point.y - offsetY;
-
-                        selectedComponent.end.x = selectedComponent.start.x + 100; // width
-                        selectedComponent.end.y = selectedComponent.start.y + 50; // height
-
-                        repaint();
-                    }
-                }
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    resizingLine = false;
-                    resizingRect=false;
-                    dragging=false;
+                    resizing = false;
                     if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
                         int response = JOptionPane.showConfirmDialog(
                                 UMLCanvas.this,
@@ -127,15 +90,14 @@ public class ClassDiagramUISelectable extends JFrame {
                 @Override
                 public void mouseDragged(MouseEvent e) {
                     if (selectedComponent != null) {
-                        if (resizingLine) {
-                            selectedComponent.resizeLine(e.getPoint());
-                        } else if(resizingRect) {
-                            selectedComponent.resizeRect(e.getPoint());
+                        if (resizing) {
+                            selectedComponent.resize(e.getPoint());
+                        } else {
+                            if(Objects.equals(selectedComponent.type, "Class") || Objects.equals(selectedComponent.type, "Comment"))
+                                selectedComponent.move(e.getPoint());
+                            else
+                                selectedComponent.moveLine(e.getPoint());
                         }
-                        else{
-                            selectedComponent.move(e.getPoint());
-                        }
-
                         repaint();
                     }
                 }
@@ -144,14 +106,22 @@ public class ClassDiagramUISelectable extends JFrame {
 
         // Create a new component at a default position
         public void createNewComponent(String type) {
-            components.add(new UMLComponent(type, new Point(100, 100),new Point(200, 200)));
+            if(type=="Class" || type=="Comment")
+                components.add(new UMLComponent(type, new Point(100, 100)));
+            else
+                components.add(new UMLComponent(type, new Point(100, 100), new Point(200, 200)));
             repaint();
         }
 
         // Select a component at a specific point
         private void selectComponentAt(Point point) {
             for (UMLComponent component : components) {
-                if (component.contains(point)) {
+                if ((Objects.equals(component.type, "Class") || Objects.equals(component.type, "Comment"))&& component.contains(point)) {
+                    selectedComponent = component;
+                    return;
+                }
+                else if((component.type!="Class" && component.type!="Comment") && component.containsLine(point)){
+
                     selectedComponent = component;
                     return;
                 }
@@ -242,14 +212,7 @@ public class ClassDiagramUISelectable extends JFrame {
 
             // Comment
             y += 50;
-            int width=100, height=50;
-            int[] commentX={x,x+width,x+width+5,x+width+5,x};
-            int[] commentY={y,y,y+5,y+height,y+height};
-
-            int[] triangleX={x+width,x+width+5,x+width};
-            int[] triangleY={y,y+5,y+5};
-            g.drawPolygon(commentX,commentY,5);
-            g.drawPolygon(triangleX,triangleY,3);
+            g.drawRect(x, y, 100, 50);
             g.drawString("Comment...", x + 10, y + 25);
         }
     }
@@ -257,53 +220,47 @@ public class ClassDiagramUISelectable extends JFrame {
     // UML Component class
     public class UMLComponent {
         private String type;
+        private Point position;
+        private String name;
         private Point start;
         private Point end;
-        private String name;
-        private int width;
-        private int height;
-        private boolean resizing;
 
-        public UMLComponent(String type, Point position, Point position2) {
+        public UMLComponent(String type, Point position) {
             this.type = type;
-            this.start = position;
-            this.end=position2;
+            this.position = position;
             this.name = type;
-            this.width = 100;
-            this.height = 50;
-            this.resizing = false;
+            this.start=null;
+            this.end=null;
         }
-
+        public UMLComponent(String type, Point start, Point end) {
+            this.type = type;
+            this.start = start;
+            this.end = end;
+            this.name = type;
+            this.position=null;
+        }
         public void move(Point newPoint) {
-            if(!resizing) {
-                int dx = newPoint.x - start.x;
-                int dy = newPoint.y - start.y;
-                start.translate(dx, dy);
-                end.translate(dx, dy);
-            }
+            position = new Point(newPoint.x - 50, newPoint.y - 25); // Center the drag
         }
-
+        public void moveLine(Point newPoint) {
+            int dx = newPoint.x - start.x;
+            int dy = newPoint.y - start.y;
+            start.translate(dx, dy);
+            end.translate(dx, dy);
+        }
         public boolean contains(Point point) {
-            return point.x >= start.x && point.x <= start.x + width
-                    && point.y >= start.y && point.y <= start.y + height;
+            return point.x >= position.x && point.x <= position.x + 100
+                    && point.y >= position.y && point.y <= position.y + 50;
         }
-        public boolean isInResizeHandle(Point point) { //for lines
+        public boolean containsLine(Point point) {
+            return new Rectangle(start.x - 5, start.y - 5, 10, 10).contains(point) ||
+                    new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
+        }
+        public boolean isInResizeHandle(Point point) {
             return new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
         }
-        public boolean isOnResizeEdge(Point point) { //for class and comments
-            int margin = 10; // Area near the edges for resizing
-            return (point.x >= start.x + width - margin && point.x <= start.x + width
-                    && point.y >= start.y && point.y <= start.y + height) ||
-                    (point.y >= start.y + height - margin && point.y <= start.y + height
-                            && point.x >= start.x && point.x <= start.x + width);
-        }
-        public void resizeLine(Point point) {
+        public void resize(Point point) {
             end.setLocation(point);
-        }
-        public void resizeRect(Point point){
-            width = Math.max(50, point.x - start.x);
-            height = Math.max(30, point.y - start.y);
-            end.setLocation(start.x + width, start.y + height);
         }
 
         public void setName(String name) {
@@ -311,63 +268,53 @@ public class ClassDiagramUISelectable extends JFrame {
         }
 
         public void draw(Graphics g) {
-            int x = start.x, y = start.y;
-            int endx=end.x,endy=end.y;
+            int x=0,y=0;
+            if(position!=null) {
+                x = position.x;
+                y = position.y;
+            }
             g.setColor(Color.BLACK);
-            Font font=new Font("Arial",Font.PLAIN,12);
-            g.setFont(font);
-            FontMetrics metrics = g.getFontMetrics(font);
             switch (type) {
                 case "Class":
                     g.drawRect(x, y, 100, 50);
                     g.drawLine(x, y + 15, x + 100, y + 15);
-                    g.drawString(name, x + 20, y + 10);
                     break;
                 case "Association":
-                    g.drawLine(x, y + 25, endx, endy);
+                    g.drawLine(start.x, start.y, end.x, end.y);
                     g.drawString(name, (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
                     break;
                 case "Inheritance":
-                    g.drawLine(x, y + 25, endx, endy);
-                    //g.drawPolygon(new int[]{x + 100, x + 105, x + 100}, new int[]{y + 20, y + 25, y + 30}, 3);
-                    drawArrowHead(g,start,end,false);
+                    g.drawLine(start.x, start.y, end.x, end.y);
+                    drawArrowHead(g, start, end, false); // Hollow arrowhead
                     g.drawString(name, (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
+                    //g.drawPolygon(new int[]{x + 100, x + 105, x + 100}, new int[]{y + 20, y + 25, y + 30}, 3);
                     break;
                 case "Aggregation":
-                    g.drawLine(x, y + 25, endx, endy);
-                    // g.drawPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
-                    drawDiamond(g,end,false);
+                    g.drawLine(start.x, start.y, end.x, end.y);
+                    drawDiamond(g, end, false);
                     g.drawString(name, (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
+                    //g.drawPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
                     break;
                 case "Composition":
-                    g.drawLine(x, y + 25, endx, endy);
-                    //g.fillPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
-                    drawDiamond(g,end,true);
+                    g.drawLine(start.x, start.y, end.x, end.y);
+                    drawDiamond(g, end, true);
                     g.drawString(name, (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
+                    //g.fillPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
                     break;
                 case "Comment":
-                    int width=metrics.stringWidth(name)+50, height=50;
-
-                    int[] commentX={x,x+width,x+width+5,x+width+5,x};
-                    int[] commentY={y,y,y+5,y+height,y+height};
-
-                    int[] triangleX={x+width,x+width+5,x+width};
-                    int[] triangleY={y,y+5,y+5};
-                    g.drawPolygon(commentX,commentY,5);
-                    g.drawPolygon(triangleX,triangleY,3);
-                    g.drawString(name, x + 20, y + 10);
-                    break;
-                default:
-                    // Non-resizable components
                     g.drawRect(x, y, 100, 50);
+                    g.drawString("", x + 10, y + 25);
                     break;
             }
+            if(position!=null)
+                g.drawString(name, x + 10, y + 10);
         }
         private void drawArrowHead(Graphics g, Point start, Point end, boolean filled) {
             int dx = end.x - start.x;
             int dy = end.y - start.y;
             double angle = Math.atan2(dy, dx);
             int arrowLength = 15;
+            int arrowWidth = 7;
 
             int x1 = end.x - (int) (arrowLength * Math.cos(angle - Math.PI / 6));
             int y1 = end.y - (int) (arrowLength * Math.sin(angle - Math.PI / 6));
@@ -376,10 +323,21 @@ public class ClassDiagramUISelectable extends JFrame {
 
             g.drawPolygon(new int[]{end.x, x1, x2}, new int[]{end.y, y1, y2}, 3); // Hollow arrowhead
         }
+
         private void drawDiamond(Graphics g, Point end, boolean filled) {
             int diamondSize = 10;
-            int[] xPoints = {end.x, end.x + diamondSize / 2, end.x+diamondSize, end.x + diamondSize / 2};
-            int[] yPoints = {end.y, end.y+diamondSize/2, end.y, end.y-diamondSize/2};
+            int[] xPoints = {
+                    end.x,
+                    end.x - diamondSize / 2,
+                    end.x,
+                    end.x + diamondSize / 2
+            };
+            int[] yPoints = {
+                    end.y - diamondSize / 2,
+                    end.y,
+                    end.y + diamondSize / 2,
+                    end.y
+            };
 
             if (filled) {
                 g.fillPolygon(xPoints, yPoints, 4);
