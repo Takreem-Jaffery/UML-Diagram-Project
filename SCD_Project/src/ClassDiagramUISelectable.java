@@ -1,4 +1,8 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -6,31 +10,114 @@ import java.util.Objects;
 
 public class ClassDiagramUISelectable extends JFrame {
     JPanel pageTitlePanel;
+    JPanel diagramNotesPanel;
+    JPanel bottomPanel;
     UMLCanvas canvas;
     SamplesPanel samplesPanel;
 
+    JTextArea diagramNotes;
+
     public ClassDiagramUISelectable() {
-        // Initialize panels
         pageTitlePanel = new JPanel();
         canvas = new UMLCanvas();
+        diagramNotesPanel = new JPanel();
+        bottomPanel=new JPanel();
         samplesPanel = new SamplesPanel(canvas);
 
         JLabel pageTitle = new JLabel("UML Class Diagram");
         pageTitle.setForeground(Color.white);
-
-        // Configure page title
         pageTitlePanel.add(pageTitle);
         pageTitlePanel.setBackground(new Color(51, 51, 51));
+
+        diagramNotes=new JTextArea();
+        diagramNotes.setSize(150, 250);
+        diagramNotes.setLineWrap(true);
+        JScrollPane diagramNotesScrollPane = new JScrollPane(diagramNotes);
+        diagramNotesPanel.setLayout(new BorderLayout());
+        diagramNotesPanel.add(diagramNotesScrollPane);
+
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.setPreferredSize(new Dimension(0,150));
+        bottomPanel.add(diagramNotesPanel,BorderLayout.EAST);
+
+        String[] previousText = {""};
+        final String[] currentText = {diagramNotes.getText()};
+        diagramNotes.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    currentText[0] = diagramNotes.getText();
+                    //get the new text after enter was pressed
+                    String newText;
+                    if(previousText[0].isEmpty()) {
+                        newText = currentText[0].substring(previousText[0].length());
+                    }
+                    else{
+                        //System.out.println("In here");
+                        newText = currentText[0].substring(previousText[0].length()+1);
+                    }
+                    System.out.println("New text entered: " + newText);
+                    if(newText.equals("--")){
+                        classDrawPartition(); //STUCK HERE******************************************************************************
+                    }
+                    // Update previousText to currentText
+                    previousText[0] = currentText[0];
+                }
+            }
+        });
+        diagramNotes.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+//                try {
+//                    // Get the document
+//                    Document doc = e.getDocument();
+//                    // Get the new text added to the JTextArea
+//                    String newText = doc.getText(e.getOffset(), e.getLength());
+//                    System.out.println("New text added: " + newText);
+//                } catch (BadLocationException ex) {
+//                    ex.printStackTrace();
+//                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        });
 
         // Configure main frame layout
         this.setLayout(new BorderLayout());
         this.add(pageTitlePanel, BorderLayout.NORTH);
         this.add(samplesPanel, BorderLayout.EAST);
         this.add(canvas, BorderLayout.CENTER);
+        this.add(bottomPanel,BorderLayout.SOUTH);
 
         this.setSize(900, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
+    }
+    void classDrawPartition(){
+        ArrayList<UMLComponent>comps=canvas.components;
+        try {
+            int startOffset = diagramNotes.getLineStartOffset(0);
+            int endOffset = diagramNotes.getLineEndOffset(0);
+
+            //first line aka the name of the class
+            String firstLine = diagramNotes.getText(startOffset, endOffset - startOffset).trim();
+            for(UMLComponent component:comps){
+                if(Objects.equals(component.name, firstLine)){
+                    //draw a line
+                    component.setDrawPartition(true);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     // Canvas to display draggable, editable, and deletable components
@@ -79,6 +166,12 @@ public class ClassDiagramUISelectable extends JFrame {
                         if (newName != null) {
                             selectedComponent.setName(newName);
                             repaint();
+                        }
+                    } else if (selectedComponent!=null && (Objects.equals(selectedComponent.type, "Class") || Objects.equals(selectedComponent.type, "Comment"))) {
+                        if(Objects.equals(selectedComponent.type, "Class")){
+                            //fill the textArea wih this components attributes
+                            diagramNotes.setText("");
+                            diagramNotes.append(selectedComponent.name);
                         }
                     }
                 }
@@ -222,6 +315,8 @@ public class ClassDiagramUISelectable extends JFrame {
         private String name;
         private Point start;
         private Point end;
+        private int noOfPartitions;
+        private boolean drawPartition;
 
         public UMLComponent(String type, Point position) {
             this.type = type;
@@ -229,6 +324,7 @@ public class ClassDiagramUISelectable extends JFrame {
             this.name = type;
             this.start=null;
             this.end=null;
+            noOfPartitions=0;
         }
         public UMLComponent(String type, Point start, Point end) {
             this.type = type;
@@ -236,6 +332,7 @@ public class ClassDiagramUISelectable extends JFrame {
             this.end = end;
             this.name = type;
             this.position=null;
+            noOfPartitions=0;
         }
         public void move(Point newPoint) {
             position = new Point(newPoint.x - 50, newPoint.y - 25); // Center the drag
@@ -265,9 +362,10 @@ public class ClassDiagramUISelectable extends JFrame {
             this.name = name;
         }
 
-        public void draw(Graphics g) {
-            int x=0,y=0;
-            if(position!=null) {
+        public void draw(Graphics g)//, boolean drawPartition) {
+        {
+            int x = 0, y = 0;
+            if (position != null) {
                 x = position.x;
                 y = position.y;
             }
@@ -276,6 +374,8 @@ public class ClassDiagramUISelectable extends JFrame {
                 case "Class":
                     g.drawRect(x, y, 100, 50);
                     g.drawLine(x, y + 15, x + 100, y + 15);
+                    int secondy = position.y + (10 * noOfPartitions);
+                    g.drawLine(x, secondy + 15, x + 100, secondy + 15);
                     break;
                 case "Association":
                     g.drawLine(start.x, start.y, end.x, end.y);
@@ -304,8 +404,17 @@ public class ClassDiagramUISelectable extends JFrame {
                     g.drawString("", x + 10, y + 25);
                     break;
             }
-            if(position!=null)
+            if (position != null)
                 g.drawString(name, x + 10, y + 10);
+            if (drawPartition) {
+                noOfPartitions++;
+                drawPartition=false;
+                repaint();
+            }
+        }
+        public void setDrawPartition(boolean val){
+            drawPartition=true;
+            repaint();
         }
         private void drawArrowHead(Graphics g, Point start, Point end, boolean filled) {
             int dx = end.x - start.x;
