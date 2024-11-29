@@ -4,7 +4,78 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b964b9-7844-4a9d-b67b-23621621525e" name="Changes" comment="" />
+    <list default="true" id="29b964b9-7844-4a9d-b67b-23621621525e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/Class.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/ClassDiagram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/CodeGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/Component.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/Diagram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/Model.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/Project.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/UseCaseDiagram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Backend/src/Usecase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/Class.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/ClassDiagram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/CodeGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/Component.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/Diagram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/Model.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/Project.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/UseCaseDiagram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project/src/business/Usecase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SCD_Project_Git.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Class.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/ClassDiagram.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/CodeGenerator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Component.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Diagram.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Model.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/UseCaseDiagram.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Usecase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$SamplesPanel$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$SamplesPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLCanvas$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLCanvas$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLCanvas.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLComponent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableRectangle$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableRectangle$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableRectangle.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$SamplesPanel$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$SamplesPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLCanvas$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLCanvas$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLCanvas.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLComponent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLCanvas.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLClass$ClickListener.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLClass$DragListener.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$SamplesPanel$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$SamplesPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLCanvas$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLCanvas$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLCanvas.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLComponent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/ClassDiagramUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/ClassDiagramUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/ClassDiagramUISelectable.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/ui/ClassDiagramUISelectable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/ResizableMoveableArrows.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/ResizableMoveableArrows.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/ResizableRectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/ResizableRectangle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/ResizeableClassAndCommentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/ResizeableClassAndCommentUI.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,6 +103,7 @@
   "keyToString": {
     "Application.ClassDiagramUISelectable.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Dell/IdeaProjects/SCD_Project_Git"
   }
