@@ -1,19 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package business;
 
-/**
- *
- * @author hp
- */
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 // Component Interface
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "classType" // JSON property to distinguish types
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Class.class, name = "Class"),
+        @JsonSubTypes.Type(value = Association.class, name = "Association"),
+        @JsonSubTypes.Type(value = Comment.class, name = "Comment")
+})
 public interface Component {
     void display();
     void addProperty();
     void removeProperty();
     void addConstraint();
     void removeConstraint();
+    String getClassType();
+
 }

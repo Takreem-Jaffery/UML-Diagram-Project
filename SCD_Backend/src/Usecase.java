@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package business;
+package scdfinal;
 
 /**
  *
@@ -40,10 +40,6 @@ public class Usecase implements Component {
     @Override
     public void removeConstraint() {
         // Implementation to be added
-    }
-    @Override
-    public String getClassType(){
-        return "UseCase";
     }
 }
 

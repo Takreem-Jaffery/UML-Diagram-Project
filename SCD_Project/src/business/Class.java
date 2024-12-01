@@ -1,24 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package business;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import ui.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author hp
- */
 // Class Class implementing Component
+//it will ignore unrecognized fields like "diagramNotes"
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Class implements Component {
     private String name;
+    private int noOfPartitions;
     private List<String> attributes;
     private List<String> methods;
-    private int noOfPartitions;
     private Point position;
+
 
     public Class(String name, int noOfPartitions, boolean drawPartition, Point position) {
         this.name = name;
@@ -97,17 +94,21 @@ public class Class implements Component {
     public void setNoOfPartitions(int noOfPartitions) {
         this.noOfPartitions = noOfPartitions;
     }
-    public void add() {
-        // Implementation to be added
+
+    public List<String> getAttributes() {
+        return attributes;
     }
 
-    public void remove() {
-        // Implementation to be added
+    public void setAttributes(List<String> attributes) {
+        this.attributes = attributes;
     }
 
-    public String get() {
-        // Implementation to be added
-        return null;
+    public List<String> getMethods() {
+        return methods;
+    }
+
+    public void setMethods(List<String> methods) {
+        this.methods = methods;
     }
 
     @Override
@@ -133,5 +134,9 @@ public class Class implements Component {
     @Override
     public void removeConstraint() {
         // Implementation to be added
+    }
+    @Override
+    public String getClassType(){
+        return "Class";
     }
 }

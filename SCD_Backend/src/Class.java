@@ -2,19 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package business;
+package scdfinal;
 
 /**
  *
  * @author hp
  */
-// Usecase Class implementing Component
-public class Usecase implements Component {
+// Class Class implementing Component
+public class Class implements Component {
     private String name;
-    private String description;
+    private List<String> attributes;
+    private List<String> methods;
 
-    public void update() {
+    public void add() {
         // Implementation to be added
+    }
+
+    public void remove() {
+        // Implementation to be added
+    }
+
+    public String get() {
+        // Implementation to be added
+        return null;
     }
 
     @Override
@@ -41,9 +51,4 @@ public class Usecase implements Component {
     public void removeConstraint() {
         // Implementation to be added
     }
-    @Override
-    public String getClassType(){
-        return "UseCase";
-    }
 }
-
