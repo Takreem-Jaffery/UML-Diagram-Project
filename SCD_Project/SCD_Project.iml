@@ -10,5 +10,6 @@
     <orderEntry type="library" name="fasterxml.jackson.dataformat.avro" level="project" />
     <orderEntry type="library" name="fasterxml.jackson.core.annotations" level="project" />
     <orderEntry type="library" name="fasterxml.jackson.dataformat.xml" level="project" />
+    <orderEntry type="library" name="fasterxml.jackson.datatype.jsr310" level="project" />
   </component>
 </module>

@@ -12,7 +12,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Class.class, name = "Class"),
         @JsonSubTypes.Type(value = Association.class, name = "Association"),
-        @JsonSubTypes.Type(value = Comment.class, name = "Comment")
+        @JsonSubTypes.Type(value = Comment.class, name = "Comment"),
+        @JsonSubTypes.Type(value = Usecase.class, name="UseCase"),
+        @JsonSubTypes.Type(value = Actor.class, name="Actor"),
+        @JsonSubTypes.Type(value = UseCaseArrow.class, name="Arrow")
+
 })
 public interface Component {
     void display();
