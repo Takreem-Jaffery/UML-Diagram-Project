@@ -44,9 +44,9 @@ public class ClassDiagramUISelectable extends JFrame {
         comments=new ArrayList<>();
         project=new Project();
 
-        saveImage=new JButton("Save Image");
-        saveProject=new JButton("Save Project");
-        loadProject= new JButton("Load Project");
+        saveImage=new JButton("\uD83D\uDDBC\uFE0F Save Image");
+        saveProject=new JButton("\uD83D\uDCBE Save Project");
+        loadProject= new JButton("⏫ Load Project");
 
         pageTitlePanel = new JPanel();
         topPanel=new JPanel();
@@ -266,7 +266,7 @@ public class ClassDiagramUISelectable extends JFrame {
         this.add(topPanel, BorderLayout.NORTH);
         this.add(samplesPanel, BorderLayout.EAST);
         this.add(canvas, BorderLayout.CENTER);
-        this.add(bottomPanel, BorderLayout.SOUTH);
+        //this.add(bottomPanel, BorderLayout.SOUTH);
 
         this.setSize(900, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -300,19 +300,11 @@ public class ClassDiagramUISelectable extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            project.saveProject(classes,associations,comments,ClassDiagramUISelectable.this); //probably send class + comment + association list
+            project.saveCDProject(classes,associations,comments,ClassDiagramUISelectable.this); //probably send class + comment + association list
 
         }
     }
 
-
-    // Save the UML components as XML
-//    private void saveAsXml(String filePath, ArrayList<UMLComponent> components) throws IOException {
-//        XmlMapper xmlMapper = new XmlMapper();
-//        xmlMapper.writeValue(new File(filePath), components);
-//    }
-
-    //UP TO HERE*************************************************************
 
     void classDrawPartition() {
         ArrayList<UMLComponent> comps = canvas.components;
@@ -377,6 +369,11 @@ public class ClassDiagramUISelectable extends JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     selectComponentAt(e.getPoint());
+
+                    if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null && (selectedComponent.type=="Class" ||selectedComponent.type=="Comment")) {
+                        showContextMenu(e);
+                    }
+
                     if (selectedComponent != null && (selectedComponent.type != "Class" && selectedComponent.type != "Comment") && selectedComponent.isInResizeHandle(e.getPoint())) {
                         resizing = true;
                     }
@@ -385,17 +382,20 @@ public class ClassDiagramUISelectable extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     resizing = false;
-                    if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
-                        int response = JOptionPane.showConfirmDialog(
-                                UMLCanvas.this,
-                                "Do you want to delete this component?",
-                                "Delete Component",
-                                JOptionPane.OK_CANCEL_OPTION
-                        );
-                        if (response == JOptionPane.OK_OPTION) {
-                            components.remove(selectedComponent);
-                            selectedComponent = null;
-                            repaint();
+                    if(selectedComponent.type!="Class" && selectedComponent.type!="Comment") {
+                        if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
+                            int response = JOptionPane.showConfirmDialog(
+                                    UMLCanvas.this,
+                                    "Do you want to delete this component?",
+                                    "Delete Component",
+                                    JOptionPane.OK_CANCEL_OPTION
+                            );
+                            if (response == JOptionPane.OK_OPTION) {
+                                components.remove(selectedComponent);
+                                associations.remove(selectedComponent.id);
+                                selectedComponent = null;
+                                repaint();
+                            }
                         }
                     }
                 }
@@ -436,7 +436,97 @@ public class ClassDiagramUISelectable extends JFrame {
                 }
             });
         }
+        private void showContextMenu(MouseEvent e) {
+            JPopupMenu menu = new JPopupMenu();
 
+            // Simple Edit option (no submenu) for "Comment" type
+            if (Objects.equals(selectedComponent.getType(), "Comment")) {
+                JMenuItem editComment = new JMenuItem("Edit");
+                editComment.addActionListener(ev -> {
+                    String newContent = JOptionPane.showInputDialog("Edit comment text:");
+                    if (newContent != null) {
+                        selectedComponent.setCommentText(newContent); // Assuming setCommentText exists for comments
+                        repaint();
+                    }
+                });
+                menu.add(editComment);
+            } else {
+                // Edit menu for Class and other non-Comment types
+                JMenu editMenu = new JMenu("Edit");
+                JMenuItem addAttribute = new JMenuItem("Add Attribute");
+                JMenuItem addMethod = new JMenuItem("Add Method");
+                JMenuItem makeInterface = new JMenuItem("Make Interface");
+                JMenuItem makeAbstract = new JMenuItem("Make Abstract");
+
+                addAttribute.addActionListener(ev -> {
+                    String attribute = JOptionPane.showInputDialog("Enter attribute (e.g., +attribute1):");
+                    if (attribute != null && selectedComponent != null) {
+                        selectedComponent.addAttribute(attribute);
+                        repaint();
+                    }
+                });
+
+                addMethod.addActionListener(ev -> {
+                    String method = JOptionPane.showInputDialog("Enter method (e.g., +operation1()):");
+                    if (method != null && selectedComponent != null) {
+                        selectedComponent.addMethod(method);
+                        repaint();
+                    }
+                });
+
+                makeInterface.addActionListener(ev -> {
+                    selectedComponent.makeInterface();
+                    repaint();
+                });
+
+                makeAbstract.addActionListener(ev -> {
+                    selectedComponent.makeAbstract();
+                    repaint();
+                });
+
+                editMenu.add(addAttribute);
+                editMenu.add(addMethod);
+                editMenu.add(makeInterface);
+                editMenu.add(makeAbstract);
+                menu.add(editMenu);
+            }
+
+            // Rename option
+            JMenuItem rename = new JMenuItem("Rename");
+            rename.addActionListener(ev -> {
+                String newName = JOptionPane.showInputDialog("Enter new name:");
+                if (newName != null) {
+                    selectedComponent.setName(newName);
+                    repaint();
+                }
+            });
+
+            // Delete option
+            JMenuItem delete = new JMenuItem("Delete");
+            delete.addActionListener(ev -> {
+                int response = JOptionPane.showConfirmDialog(
+                        UMLCanvas.this,
+                        "Do you want to delete this component?",
+                        "Delete Component",
+                        JOptionPane.OK_CANCEL_OPTION
+                );
+                if (response == JOptionPane.OK_OPTION) {
+                    components.remove(selectedComponent);
+                    if(selectedComponent.type=="Class")
+                        classes.remove(selectedComponent.id);
+                    else
+                        comments.remove(selectedComponent.id);
+                    selectedComponent = null;
+                    repaint();
+                }
+            });
+
+            menu.add(rename);
+            menu.add(delete);
+
+            // Display the menu
+            menu.show(this, e.getX(), e.getY());
+        }
         // Create a new component at a default position
         public void createNewComponent(String type) {
             if (type == "Class" || type == "Comment") {
@@ -482,13 +572,44 @@ public class ClassDiagramUISelectable extends JFrame {
             selectedComponent = null;
         }
 
+//        @Override
+//        protected void paintComponent(Graphics g) {
+//            super.paintComponent(g);
+//            for (UMLComponent component : components) {
+//                component.draw(g);
+//            }
+//        }
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g.create();
+
+            // Define the fixed grid cell size
+            final int cellSize = 20; // Adjust this to set the size of each grid cell
+
+            // Get the dimensions of the canvas
+            int canvasWidth = getWidth();
+            int canvasHeight = getHeight();
+
+            // Draw the grid
+            g2d.setColor(Color.LIGHT_GRAY); // Set the grid line color
+            for (int x = 0; x <= canvasWidth; x += cellSize) {
+                g2d.drawLine(x, 0, x, canvasHeight); // Vertical lines
+            }
+            for (int y = 0; y <= canvasHeight; y += cellSize) {
+                g2d.drawLine(0, y, canvasWidth, y); // Horizontal lines
+            }
+
+            // Dispose of the graphics object
+            g2d.dispose();
+
+            // Draw UML components on top of the grid
             for (UMLComponent component : components) {
                 component.draw(g);
             }
         }
+
+
     }
 
     // Panel to display static samples
@@ -579,7 +700,12 @@ public class ClassDiagramUISelectable extends JFrame {
         private Point end;
         private int noOfPartitions;
         private boolean drawPartition;
+        private ArrayList<String> attributes;
+        private ArrayList<String> methods;
         public int id;
+        private int maxWidth;
+        private int maxHeight;
+        private String text;
 
         public UMLComponent(String type, Point position) {
             this.type = type;
@@ -588,6 +714,11 @@ public class ClassDiagramUISelectable extends JFrame {
             this.start = null;
             this.end = null;
             noOfPartitions = 0;
+            this.attributes = new ArrayList<>();
+            this.methods = new ArrayList<>();
+            maxHeight=50;
+            maxWidth=100;
+            text="";
         }
 
         public UMLComponent(String type, Point start, Point end) {
@@ -598,7 +729,9 @@ public class ClassDiagramUISelectable extends JFrame {
             this.position = null;
             noOfPartitions = 0;
         }
-
+        public String getType() {
+            return type;
+        }
         public void move(Point newPoint) {
             position = new Point(newPoint.x - 50, newPoint.y - 25); // Center the drag
             if(type=="Class")
@@ -617,8 +750,8 @@ public class ClassDiagramUISelectable extends JFrame {
         }
 
         public boolean contains(Point point) {
-            return point.x >= position.x && point.x <= position.x + 100
-                    && point.y >= position.y && point.y <= position.y + 50;
+            return point.x >= position.x && point.x <= position.x + maxWidth
+                    && point.y >= position.y && point.y <= position.y + maxHeight;
         }
 
         public boolean containsLine(Point point) {
@@ -650,6 +783,58 @@ public class ClassDiagramUISelectable extends JFrame {
                 a.setName(name);
             }
         }
+        public int calcMaxWidth(Graphics g){
+            // Determine the required width of the class box based on the longest text
+            int maxTextWidth = g.getFontMetrics().stringWidth(name); // Start with the name width
+
+            // Calculate the maximum width among attributes
+            for (String attribute : attributes) {
+                maxTextWidth = Math.max(maxTextWidth, g.getFontMetrics().stringWidth(attribute));
+            }
+
+            // Calculate the maximum width among methods
+            for (String method : methods) {
+                maxTextWidth = Math.max(maxTextWidth, g.getFontMetrics().stringWidth(method));
+            }
+            int max=Math.max(100, maxTextWidth + 10); // Minimum width is 100
+            maxWidth=max;
+            return max;
+        }
+        public int calcMaxHeight(Graphics g){
+            int max=50 + attributes.size() * 15 + methods.size() * 15;
+            maxHeight=max;
+            return max;
+        }
+        public void addAttribute(String attribute) {
+            attributes.add(attribute);
+            classes.get(id).addAttribute(attribute);
+        }
+
+        public void addMethod(String method) {
+            methods.add(method);
+            classes.get(id).addMethod(method);
+        }
+
+        public void makeInterface() {
+            name = "<<interface>> " + name;
+            classes.get(id).setName(name);
+        }
+
+        public void makeAbstract() {
+            name = "<html><i>" + name + "</i></html>";
+            classes.get(id).setName(name);
+        }
+
+        public void setCommentText(String newContent) {
+            if (!"Comment".equals(type)) {
+                throw new UnsupportedOperationException("setCommentText can only be used for 'Comment' type components.");
+            }
+            if (newContent == null || newContent.trim().isEmpty()) {
+                throw new IllegalArgumentException("Comment content cannot be null or empty.");
+            }
+            this.text = newContent;
+            System.out.println("Comment updated to: " + this.text);
+        }
 
         public void draw(Graphics g)//, boolean drawPartition) {
         {
@@ -661,15 +846,52 @@ public class ClassDiagramUISelectable extends JFrame {
             g.setColor(Color.BLACK);
             switch (type) {
                 case "Class":
-                    g.drawRect(x, y, 100, 50);
-                    //g.drawLine(x, y + 15, x + 100, y + 15);
+                    int boxWidth = calcMaxWidth(g);
+                    int totalHeight = calcMaxHeight(g);
+
+                    // Draw the class box
+                    g.drawRect(x, y, boxWidth, totalHeight);
+
+                    // Draw the name section
+                    g.drawLine(x, y + 20, x + boxWidth, y + 20);
+
+                    // Draw the attributes section
+                    if (!attributes.isEmpty()) {
+                        g.drawLine(x, y + 30 + attributes.size() * 15, x + boxWidth, y + 30 + attributes.size() * 15);
+                        int attrY = y + 35;
+                        for (String attribute : attributes) {
+                            g.drawString(attribute, x + 5, attrY);
+                            attrY += 15;
+                        }
+                    }
+
+                    // Draw the methods section
+                    if (!methods.isEmpty()) {
+                        int methodY = y + 45 + attributes.size() * 15;
+                        for (String method : methods) {
+                            g.drawString(method, x + 5, methodY);
+                            methodY += 15;
+                        }
+                    }
+
+                    // Draw partitions (if any)
                     if (noOfPartitions > 0) {
                         for (int i = 0; i < noOfPartitions; i++) {
-                            int secondy = position.y + (10 * i);
-                            g.drawLine(x, secondy + 15, x + 100, secondy + 15);
+                            int partitionY = y + (10 * (i + 1)); // Adjust the Y position for each partition
+                            g.drawLine(x, partitionY + 15, x + boxWidth, partitionY + 15);
                         }
                     }
                     break;
+
+//                g.drawRect(x, y, 100, 50);
+//                    //g.drawLine(x, y + 15, x + 100, y + 15);
+//                    if (noOfPartitions > 0) {
+//                        for (int i = 0; i < noOfPartitions; i++) {
+//                            int secondy = position.y + (10 * i);
+//                            g.drawLine(x, secondy + 15, x + 100, secondy + 15);
+//                        }
+//                    }
+//                    break;
                 case "Association":
                     g.drawLine(start.x, start.y, end.x, end.y);
                     g.drawString(name, (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);

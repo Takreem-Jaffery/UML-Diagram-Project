@@ -3,6 +3,8 @@ package data;
 import business.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 public class JsonDAO {
 
     public void saveAsJson(String filePath, ArrayList<Component> components) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule()).enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.writeValue(new File(filePath), components);
     }
 
