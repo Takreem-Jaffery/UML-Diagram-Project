@@ -44,9 +44,9 @@ public class UseCaseDiagramUISelectable extends JFrame {
         usecases=new ArrayList<>();
         project=new Project();
 
-        saveImage=new JButton("Save Image");
-        saveProject=new JButton("Save Project");
-        loadProject= new JButton("Load Project");
+        saveImage=new JButton("\uD83D\uDDBC\uFE0F Save Image");
+        saveProject=new JButton("\uD83D\uDCBE Save Project");
+        loadProject= new JButton("⏫ Load Project");
 
         pageTitlePanel = new JPanel();
         topPanel=new JPanel();
@@ -268,7 +268,7 @@ public class UseCaseDiagramUISelectable extends JFrame {
         this.add(topPanel, BorderLayout.NORTH);
         this.add(samplesPanel, BorderLayout.EAST);
         this.add(canvas, BorderLayout.CENTER);
-        this.add(bottomPanel, BorderLayout.SOUTH);
+        //this.add(bottomPanel, BorderLayout.SOUTH);
 
         this.setSize(900, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -434,9 +434,38 @@ public class UseCaseDiagramUISelectable extends JFrame {
             selectedComponent = null;
         }
 
+//        @Override
+//        protected void paintComponent(Graphics g) {
+//            super.paintComponent(g);
+//            for (UMLComponent component : components) {
+//                component.draw(g);
+//            }
+//        }
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g.create();
+
+            // Define the fixed grid cell size
+            final int cellSize = 20; // Adjust this to set the size of each grid cell
+
+            // Get the dimensions of the canvas
+            int canvasWidth = getWidth();
+            int canvasHeight = getHeight();
+
+            // Draw the grid
+            g2d.setColor(Color.LIGHT_GRAY); // Set the grid line color
+            for (int x = 0; x <= canvasWidth; x += cellSize) {
+                g2d.drawLine(x, 0, x, canvasHeight); // Vertical lines
+            }
+            for (int y = 0; y <= canvasHeight; y += cellSize) {
+                g2d.drawLine(0, y, canvasWidth, y); // Horizontal lines
+            }
+
+            // Dispose of the graphics object
+            g2d.dispose();
+
+            // Draw UML components on top of the grid
             for (UMLComponent component : components) {
                 component.draw(g);
             }
