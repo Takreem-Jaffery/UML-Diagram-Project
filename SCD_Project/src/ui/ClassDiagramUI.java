@@ -246,7 +246,7 @@ public class ClassDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        new SaveProjectActionListener();
+                        project.saveCDProject(classes,associations,comments,ClassDiagramUI.this); //probably send class + comment + association list
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();
@@ -265,67 +265,67 @@ public class ClassDiagramUI extends JFrame {
                 revalidate();
             }
         });
-        String[] previousText = {""};
-        final String[] currentText = {diagramNotes.getText()};
-        diagramNotes.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    currentText[0] = diagramNotes.getText();
-                    //get the new text after enter was pressed
-                    String newText;
-                    if (previousText[0].isEmpty()) {
-                        newText = currentText[0].substring(previousText[0].length());
-                    } else {
-                        //System.out.println("In here");
-                        newText = currentText[0].substring(previousText[0].length() + 1);
-                    }
-                    System.out.println("New text entered: " + newText);
-                    if (newText.equals("--")) {
-                        classDrawPartition();
-                    }
-                    // Update previousText to currentText
-                    previousText[0] = currentText[0];
-                }
-            }
-        });
-        diagramNotes.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                SwingUtilities.invokeLater(() -> {
-                    try {
-                        String currentText = diagramNotes.getText();
-
-                        // Iterate through all lines in the text area
-                        String[] lines = currentText.split("\n");
-                        ArrayList<String> lineList = new ArrayList<>(java.util.Arrays.asList(lines));
-
-                        // Iterate through canvas components to adjust partitions
-                        // Count current number of `--` lines associated with this component
-                        int currentPartitions = 0;
-                        for (String line : lineList) {
-                            if (line.trim().equals("--")) {
-                                currentPartitions++;
-                            }
-                        }
-                        classRemovePartition(currentPartitions);
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                });
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-
-            }
-        });
+//        String[] previousText = {""};
+//        final String[] currentText = {diagramNotes.getText()};
+//        diagramNotes.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//                    currentText[0] = diagramNotes.getText();
+//                    //get the new text after enter was pressed
+//                    String newText;
+//                    if (previousText[0].isEmpty()) {
+//                        newText = currentText[0].substring(previousText[0].length());
+//                    } else {
+//                        //System.out.println("In here");
+//                        newText = currentText[0].substring(previousText[0].length() + 1);
+//                    }
+//                    System.out.println("New text entered: " + newText);
+//                    if (newText.equals("--")) {
+//                        classDrawPartition();
+//                    }
+//                    // Update previousText to currentText
+//                    previousText[0] = currentText[0];
+//                }
+//            }
+//        });
+//        diagramNotes.getDocument().addDocumentListener(new DocumentListener() {
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                SwingUtilities.invokeLater(() -> {
+//                    try {
+//                        String currentText = diagramNotes.getText();
+//
+//                        // Iterate through all lines in the text area
+//                        String[] lines = currentText.split("\n");
+//                        ArrayList<String> lineList = new ArrayList<>(java.util.Arrays.asList(lines));
+//
+//                        // Iterate through canvas components to adjust partitions
+//                        // Count current number of `--` lines associated with this component
+//                        int currentPartitions = 0;
+//                        for (String line : lineList) {
+//                            if (line.trim().equals("--")) {
+//                                currentPartitions++;
+//                            }
+//                        }
+//                        classRemovePartition(currentPartitions);
+//
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//
+//            }
+//        });
 
         // Configure main frame layout
         this.setLayout(new BorderLayout());
@@ -333,8 +333,6 @@ public class ClassDiagramUI extends JFrame {
         this.add(rightPanel, BorderLayout.EAST);
         this.add(canvasScrollPanel, BorderLayout.CENTER);
         //this.add(bottomPanel, BorderLayout.SOUTH);
-
-
 
         this.setSize(900, 600);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Prevent automatic closing
@@ -352,7 +350,7 @@ public class ClassDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        new SaveProjectActionListener();
+                        project.saveCDProject(classes,associations,comments,ClassDiagramUI.this);
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();

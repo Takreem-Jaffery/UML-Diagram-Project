@@ -241,7 +241,7 @@ public class UseCaseDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        new SaveProjectActionListener();
+                        project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUI.this);
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();
@@ -347,7 +347,7 @@ public class UseCaseDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        new SaveProjectActionListener();
+                        project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUI.this);
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();

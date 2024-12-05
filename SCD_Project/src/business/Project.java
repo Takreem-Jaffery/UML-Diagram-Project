@@ -1,5 +1,6 @@
 package business;
 
+import ui.*;
 import data.JpegImageDAO;
 import data.JsonDAO;
 import data.PngImageDAO;
@@ -186,21 +187,21 @@ public class Project {
         }
         return null; // Return null if no file was loaded
     }
-    public void exportToPNG(String filePath,float width, float height,ClassDiagramUISelectable ui) throws IOException {
+    public void exportToPNG(String filePath,float width, float height,ClassDiagramUI ui) throws IOException {
         BufferedImage image = ui.exportToBufferedImage(width,height);
         pngImageDAO.exportToPNG(filePath,image);
     }
 
-    public void exportToJPEG(String filePath,float width, float height,ClassDiagramUISelectable ui) throws IOException {
+    public void exportToJPEG(String filePath,float width, float height,ClassDiagramUI ui) throws IOException {
         BufferedImage image = ui.exportToBufferedImage(width,height);
         jpegImageDAO.exportToJPEG(filePath,image);
     }
-    public void exportToPNG(String filePath,float width, float height,UseCaseDiagramUISelectable ui) throws IOException {
+    public void exportToPNG(String filePath,float width, float height,UseCaseDiagramUI ui) throws IOException {
         BufferedImage image = ui.exportToBufferedImage(width,height);
         pngImageDAO.exportToPNG(filePath,image);
     }
 
-    public void exportToJPEG(String filePath,float width, float height,UseCaseDiagramUISelectable ui) throws IOException {
+    public void exportToJPEG(String filePath,float width, float height,UseCaseDiagramUI ui) throws IOException {
         BufferedImage image = ui.exportToBufferedImage(width,height);
         jpegImageDAO.exportToJPEG(filePath,image);
     }
