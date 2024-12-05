@@ -1,8 +1,9 @@
 package ui;
 
-import business.*;
+import business.Association;
 import business.Class;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import business.Comment;
+import business.Project;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -17,13 +18,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class ClassDiagramUISelectable extends JFrame {
+public class ClassDiagramUI extends JFrame {
     JPanel pageTitlePanel;
     JPanel topPanel;
     JPanel diagramNotesPanel;
     JPanel bottomPanel;
     UMLCanvas canvas;
     SamplesPanel samplesPanel;
+    JScrollPane canvasScrollPanel;
+    JPanel rightPanel;
 
     JTextArea diagramNotes;
     ArrayList<business.Class> classes;
@@ -34,9 +37,14 @@ public class ClassDiagramUISelectable extends JFrame {
     JButton saveImage;
     JButton saveProject;
     JButton loadProject;
+    JButton generateCode;
+    JButton toUCDButton;
     JPanel topButtonPanel;
+    JPanel topRightButtonPanel;
+    JLabel mouseCoords;
+    JPanel bottomCoords;
 
-    public ClassDiagramUISelectable() {
+    public ClassDiagramUI() {
 
         //business layer objects
         classes = new ArrayList<>();
@@ -44,30 +52,54 @@ public class ClassDiagramUISelectable extends JFrame {
         comments=new ArrayList<>();
         project=new Project();
 
+
         saveImage=new JButton("\uD83D\uDDBC\uFE0F Save Image");
         saveProject=new JButton("\uD83D\uDCBE Save Project");
         loadProject= new JButton("⏫ Load Project");
+        generateCode=new JButton("\uD83D\uDC68\u200D\uD83D\uDCBB Generate Code");
+        toUCDButton=new JButton("Use Case Diagram ➡\uFE0F");
 
         pageTitlePanel = new JPanel();
         topPanel=new JPanel();
         canvas = new UMLCanvas();
+        canvas.setPreferredSize(new Dimension(2000, 2000));
+        canvasScrollPanel=new JScrollPane(canvas);
+        canvasScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        canvasScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         diagramNotesPanel = new JPanel();
         bottomPanel = new JPanel();
         samplesPanel = new SamplesPanel(canvas);
+        samplesPanel.setBackground(Color.white);
         topButtonPanel=new JPanel();
+        topRightButtonPanel=new JPanel();
+        mouseCoords=new JLabel();
+        mouseCoords.setBackground(Color.white);
+        bottomCoords=new JPanel();
+        bottomCoords.add(mouseCoords);
+        bottomCoords.setBackground(Color.white);
+        rightPanel=new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.add(samplesPanel,BorderLayout.CENTER);
+        rightPanel.add(bottomCoords,BorderLayout.SOUTH);
+        rightPanel.setBackground(Color.white);
 
         JLabel pageTitle = new JLabel("UML Class Diagram");
         pageTitle.setForeground(Color.white);
+        pageTitle.setBorder(BorderFactory.createEmptyBorder(0,0,0,300));
         topPanel.setLayout(new BorderLayout());
         pageTitlePanel.add(pageTitle);
         pageTitlePanel.setBackground(new Color(51, 51, 51));
 
         topButtonPanel.setBackground(new Color(51, 51, 51));
+        topRightButtonPanel.setBackground(new Color(51,51,51));
         topButtonPanel.add(saveImage);
         topButtonPanel.add(saveProject);
         topButtonPanel.add(loadProject);
+        topButtonPanel.add(generateCode);
+        topRightButtonPanel.add(toUCDButton);
         topPanel.add(topButtonPanel,BorderLayout.WEST);
         topPanel.add(pageTitlePanel,BorderLayout.CENTER);
+        topPanel.add(topRightButtonPanel,BorderLayout.EAST);
 
         diagramNotes = new JTextArea();
         diagramNotes.setSize(150, 250);
@@ -80,6 +112,7 @@ public class ClassDiagramUISelectable extends JFrame {
         bottomPanel.setPreferredSize(new Dimension(0, 150));
         bottomPanel.add(diagramNotesPanel, BorderLayout.EAST);
 
+        JFrame frame=this;
         saveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,14 +133,14 @@ public class ClassDiagramUISelectable extends JFrame {
 
                 //prompt user for project name
                 String fileName = JOptionPane.showInputDialog(
-                        ClassDiagramUISelectable.this,
+                        ClassDiagramUI.this,
                         "Enter File Name:",
                         "Save Image",
                         JOptionPane.PLAIN_MESSAGE
                 );
 
                 if (fileName == null || fileName.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(ClassDiagramUISelectable.this,
+                    JOptionPane.showMessageDialog(ClassDiagramUI.this,
                             "Project name cannot be empty.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
@@ -118,7 +151,7 @@ public class ClassDiagramUISelectable extends JFrame {
                 fileChooser.setFileFilter(new FileNameExtensionFilter("JPEG or PNG", "jpeg", "png"));
                 fileChooser.setSelectedFile(new File(fileName));
 
-                int userSelection = fileChooser.showSaveDialog(ClassDiagramUISelectable.this);
+                int userSelection = fileChooser.showSaveDialog(ClassDiagramUI.this);
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     String filePath = file.getAbsolutePath();
@@ -131,19 +164,19 @@ public class ClassDiagramUISelectable extends JFrame {
                     }
 
                     try {
-                        float width=canvas.getWidth();
-                        float height=canvas.getHeight();
+                        float width=frame.getWidth();
+                        float height=frame.getHeight();
                         if (filePath.endsWith(".jpeg")) {
-                            project.exportToJPEG(filePath, width, height, ClassDiagramUISelectable.this);
+                            project.exportToJPEG(filePath, width, height, ClassDiagramUI.this);
                         } else if (filePath.endsWith(".png")) {
-                            project.exportToPNG(filePath,width,height,ClassDiagramUISelectable.this);
+                            project.exportToPNG(filePath,width,height,ClassDiagramUI.this);
                         }
-                        JOptionPane.showMessageDialog(ClassDiagramUISelectable.this,
+                        JOptionPane.showMessageDialog(ClassDiagramUI.this,
                                 "Image saved successfully!",
                                 "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(ClassDiagramUISelectable.this,
+                        JOptionPane.showMessageDialog(ClassDiagramUI.this,
                                 "Failed to save the image: " + ex.getMessage(),
                                 "Error",
                                 JOptionPane.ERROR_MESSAGE);
@@ -155,7 +188,7 @@ public class ClassDiagramUISelectable extends JFrame {
         loadProject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<business.Component> components=project.loadProject(ClassDiagramUISelectable.this);
+                ArrayList<business.Component> components=project.loadProject(ClassDiagramUI.this);
                 if(components==null)
                     return;
 
@@ -181,6 +214,8 @@ public class ClassDiagramUISelectable extends JFrame {
                     c.id=i;
                     c.noOfPartitions=classes.get(i).getNoOfPartitions();
                     c.name=classes.get(i).getName();
+                    c.attributes=classes.get(i).getAttributes();
+                    c.methods=classes.get(i).getMethods();
                     comps.add(c);
                 }
                 for(int i=0;i<associations.size();i++){
@@ -198,7 +233,38 @@ public class ClassDiagramUISelectable extends JFrame {
                 canvas.repaint();
             }
         });
+        toUCDButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!canvas.components.isEmpty()){
+                    int choice = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Do you want to save the project before moving to Use Case Diagram?",
+                            "Save Project",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
 
+                    if (choice == JOptionPane.YES_OPTION) {
+                        new SaveProjectActionListener();
+                        frame.dispose();
+                    } else if (choice == JOptionPane.NO_OPTION) {
+                        frame.dispose();
+                    }
+                }
+                frame.dispose();
+                new UseCaseDiagramUI();
+            }
+        });
+        canvas.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                mouseCoords.setText("("+e.getX()+","+e.getY()+")");
+                repaint();
+                revalidate();
+            }
+        });
         String[] previousText = {""};
         final String[] currentText = {diagramNotes.getText()};
         diagramNotes.addKeyListener(new KeyAdapter() {
@@ -264,12 +330,38 @@ public class ClassDiagramUISelectable extends JFrame {
         // Configure main frame layout
         this.setLayout(new BorderLayout());
         this.add(topPanel, BorderLayout.NORTH);
-        this.add(samplesPanel, BorderLayout.EAST);
-        this.add(canvas, BorderLayout.CENTER);
+        this.add(rightPanel, BorderLayout.EAST);
+        this.add(canvasScrollPanel, BorderLayout.CENTER);
         //this.add(bottomPanel, BorderLayout.SOUTH);
 
+
+
         this.setSize(900, 600);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Prevent automatic closing
+        //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (!canvas.components.isEmpty()) {
+                    int choice = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Do you want to save the project before exiting?",
+                            "Save Project",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
+
+                    if (choice == JOptionPane.YES_OPTION) {
+                        new SaveProjectActionListener();
+                        frame.dispose();
+                    } else if (choice == JOptionPane.NO_OPTION) {
+                        frame.dispose();
+                    }
+                }
+                else frame.dispose();
+            }
+        });
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
     }
 
@@ -300,7 +392,7 @@ public class ClassDiagramUISelectable extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            project.saveCDProject(classes,associations,comments,ClassDiagramUISelectable.this); //probably send class + comment + association list
+            project.saveCDProject(classes,associations,comments,ClassDiagramUI.this); //probably send class + comment + association list
 
         }
     }
@@ -358,7 +450,13 @@ public class ClassDiagramUISelectable extends JFrame {
         private ArrayList<UMLComponent> components;
         private UMLComponent selectedComponent;
         private boolean resizing;
+        private final int maxWidth = 2000;
+        private final int maxHeight = 2000;
 
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(maxWidth, maxHeight);
+        }
         public UMLCanvas() {
             components = new ArrayList<>();
             selectedComponent = null;
@@ -382,19 +480,21 @@ public class ClassDiagramUISelectable extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     resizing = false;
-                    if(selectedComponent.type!="Class" && selectedComponent.type!="Comment") {
-                        if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
-                            int response = JOptionPane.showConfirmDialog(
-                                    UMLCanvas.this,
-                                    "Do you want to delete this component?",
-                                    "Delete Component",
-                                    JOptionPane.OK_CANCEL_OPTION
-                            );
-                            if (response == JOptionPane.OK_OPTION) {
-                                components.remove(selectedComponent);
-                                associations.remove(selectedComponent.id);
-                                selectedComponent = null;
-                                repaint();
+                    if(selectedComponent!=null) {
+                        if (selectedComponent.type != "Class" && selectedComponent.type != "Comment") {
+                            if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
+                                int response = JOptionPane.showConfirmDialog(
+                                        UMLCanvas.this,
+                                        "Do you want to delete this component?",
+                                        "Delete Component",
+                                        JOptionPane.OK_CANCEL_OPTION
+                                );
+                                if (response == JOptionPane.OK_OPTION) {
+                                    components.remove(selectedComponent);
+                                    associations.remove(selectedComponent.id);
+                                    selectedComponent = null;
+                                    repaint();
+                                }
                             }
                         }
                     }
@@ -686,8 +786,19 @@ public class ClassDiagramUISelectable extends JFrame {
 
             // Comment
             y += 50;
-            g.drawRect(x, y, 100, 50);
-            g.drawString("Comment...", x + 10, y + 25);
+            //g.drawRect(x, y, 100, 50);
+            //g.drawString("Comment...", x + 10, y + 25);
+
+            int width=100, height=50;
+            String commentText="Comment...";
+            int[] commentX={x,width-5,width,width,x};
+            int[] commentY={y,y,y+5,y+height,y+height};
+
+            int[] triangleX={width-5,width-5,width};
+            int[] triangleY={y,y+5,y+5};
+            g.drawPolygon(commentX,commentY,5);
+            g.drawPolygon(triangleX,triangleY,3);
+            g.drawString(commentText,x+10,y+25);
         }
     }
 
@@ -882,16 +993,6 @@ public class ClassDiagramUISelectable extends JFrame {
                         }
                     }
                     break;
-
-//                g.drawRect(x, y, 100, 50);
-//                    //g.drawLine(x, y + 15, x + 100, y + 15);
-//                    if (noOfPartitions > 0) {
-//                        for (int i = 0; i < noOfPartitions; i++) {
-//                            int secondy = position.y + (10 * i);
-//                            g.drawLine(x, secondy + 15, x + 100, secondy + 15);
-//                        }
-//                    }
-//                    break;
                 case "Association":
                     g.drawLine(start.x, start.y, end.x, end.y);
                     g.drawString(name, (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
@@ -915,8 +1016,22 @@ public class ClassDiagramUISelectable extends JFrame {
                     //g.fillPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
                     break;
                 case "Comment":
-                    g.drawRect(x, y, 100, 50);
-                    g.drawString("", x + 10, y + 25);
+                    //g.drawRect(x, y, 100, 50);
+                    //g.drawString("", x + 10, y + 25);
+                    int width=100,height=50;
+                    if(!this.text.isEmpty()){
+                        Graphics2D g2d =(Graphics2D) g;
+                        FontMetrics fontMetrics = g2d.getFontMetrics();
+                        width = 20+fontMetrics.stringWidth(text);
+                    }
+                    int[] commentX={x,x+width-5,x+width,x+width,x};
+                    int[] commentY={y,y,y+5,y+height,y+height};
+
+                    int[] triangleX={x+width-5,x+width-5,x+width};
+                    int[] triangleY={y,y+5,y+5};
+                    g.drawPolygon(commentX,commentY,5);
+                    g.drawPolygon(triangleX,triangleY,3);
+                    g.drawString(this.text,x+10,y+25);
                     break;
             }
             if (position != null)
@@ -972,6 +1087,6 @@ public class ClassDiagramUISelectable extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ClassDiagramUISelectable();
+        new ClassDiagramUI();
     }
 }

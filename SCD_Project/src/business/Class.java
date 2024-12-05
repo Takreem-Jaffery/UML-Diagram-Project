@@ -1,10 +1,10 @@
 package business;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import ui.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 // Class Class implementing Component
 //it will ignore unrecognized fields like "diagramNotes"
@@ -12,8 +12,10 @@ import java.util.List;
 public class Class implements Component {
     private String name;
     private int noOfPartitions;
-    private List<String> attributes;
-    private List<String> methods;
+    @JsonProperty("attributes")
+    private ArrayList<String> attributes;
+    @JsonProperty("methods")
+    private ArrayList<String> methods;
     private Point position;
 
 
@@ -95,19 +97,19 @@ public class Class implements Component {
         this.noOfPartitions = noOfPartitions;
     }
 
-    public List<String> getAttributes() {
+    public ArrayList<String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<String> attributes) {
+    public void setAttributes(ArrayList<String> attributes) {
         this.attributes = attributes;
     }
 
-    public List<String> getMethods() {
+    public ArrayList<String> getMethods() {
         return methods;
     }
 
-    public void setMethods(List<String> methods) {
+    public void setMethods(ArrayList<String> methods) {
         this.methods = methods;
     }
 

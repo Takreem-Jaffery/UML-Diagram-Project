@@ -1,12 +1,11 @@
 package ui;
 
-import business.*;
-import business.Class;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import business.Actor;
+import business.Project;
+import business.UseCaseArrow;
+import business.Usecase;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,13 +16,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class UseCaseDiagramUISelectable extends JFrame {
+public class UseCaseDiagramUI extends JFrame {
     JPanel pageTitlePanel;
     JPanel topPanel;
     JPanel diagramNotesPanel;
     JPanel bottomPanel;
     UMLCanvas canvas;
     SamplesPanel samplesPanel;
+    JScrollPane canvasScrollPanel;
+    JPanel rightPanel;
 
     JTextArea diagramNotes;
     ArrayList<business.Usecase> usecases;
@@ -34,9 +35,15 @@ public class UseCaseDiagramUISelectable extends JFrame {
     JButton saveImage;
     JButton saveProject;
     JButton loadProject;
+    JButton generateCode;
+    JButton toCDButton;
     JPanel topButtonPanel;
+    JPanel topRightButtonPanel;
+    JLabel mouseCoords;
+    JPanel bottomCoords;
 
-    public UseCaseDiagramUISelectable() {
+
+    public UseCaseDiagramUI() {
 
         //business layer objects
         arrows = new ArrayList<>();
@@ -47,27 +54,50 @@ public class UseCaseDiagramUISelectable extends JFrame {
         saveImage=new JButton("\uD83D\uDDBC\uFE0F Save Image");
         saveProject=new JButton("\uD83D\uDCBE Save Project");
         loadProject= new JButton("⏫ Load Project");
+        generateCode=new JButton("\uD83D\uDC68\u200D\uD83D\uDCBB Generate Code");
+        toCDButton=new JButton("Class Diagram ➡\uFE0F");
 
         pageTitlePanel = new JPanel();
         topPanel=new JPanel();
         canvas = new UMLCanvas();
+        canvas.setPreferredSize(new Dimension(2000, 2000));
+        canvasScrollPanel=new JScrollPane(canvas);
+        canvasScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        canvasScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         diagramNotesPanel = new JPanel();
         bottomPanel = new JPanel();
         samplesPanel = new SamplesPanel(canvas);
+        samplesPanel.setBackground(Color.white);
         topButtonPanel=new JPanel();
+        topRightButtonPanel=new JPanel();
+        mouseCoords=new JLabel();
+        mouseCoords.setBackground(Color.white);
+        bottomCoords=new JPanel();
+        bottomCoords.add(mouseCoords);
+        bottomCoords.setBackground(Color.white);
+        rightPanel=new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.add(samplesPanel,BorderLayout.CENTER);
+        rightPanel.add(bottomCoords,BorderLayout.SOUTH);
+        rightPanel.setBackground(Color.white);
 
         JLabel pageTitle = new JLabel("UML Use Case Diagram");
         pageTitle.setForeground(Color.white);
+        pageTitle.setBorder(BorderFactory.createEmptyBorder(0,0,0,300));
         topPanel.setLayout(new BorderLayout());
         pageTitlePanel.add(pageTitle);
         pageTitlePanel.setBackground(new Color(51, 51, 51));
 
         topButtonPanel.setBackground(new Color(51, 51, 51));
+        topRightButtonPanel.setBackground(new Color(51,51,51));
         topButtonPanel.add(saveImage);
         topButtonPanel.add(saveProject);
         topButtonPanel.add(loadProject);
+        topButtonPanel.add(generateCode);
+        topRightButtonPanel.add(toCDButton);
         topPanel.add(topButtonPanel,BorderLayout.WEST);
         topPanel.add(pageTitlePanel,BorderLayout.CENTER);
+        topPanel.add(topRightButtonPanel,BorderLayout.EAST);
 
         diagramNotes = new JTextArea();
         diagramNotes.setSize(150, 250);
@@ -80,6 +110,7 @@ public class UseCaseDiagramUISelectable extends JFrame {
         bottomPanel.setPreferredSize(new Dimension(0, 150));
         bottomPanel.add(diagramNotesPanel, BorderLayout.EAST);
 
+        JFrame frame=this;
         saveImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,14 +131,14 @@ public class UseCaseDiagramUISelectable extends JFrame {
 
                 //prompt user for project name
                 String fileName = JOptionPane.showInputDialog(
-                        UseCaseDiagramUISelectable.this,
+                        UseCaseDiagramUI.this,
                         "Enter File Name:",
                         "Save Image",
                         JOptionPane.PLAIN_MESSAGE
                 );
 
                 if (fileName == null || fileName.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(UseCaseDiagramUISelectable.this,
+                    JOptionPane.showMessageDialog(UseCaseDiagramUI.this,
                             "Project name cannot be empty.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
@@ -118,7 +149,7 @@ public class UseCaseDiagramUISelectable extends JFrame {
                 fileChooser.setFileFilter(new FileNameExtensionFilter("JPEG or PNG", "jpeg", "png"));
                 fileChooser.setSelectedFile(new File(fileName));
 
-                int userSelection = fileChooser.showSaveDialog(UseCaseDiagramUISelectable.this);
+                int userSelection = fileChooser.showSaveDialog(UseCaseDiagramUI.this);
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     String filePath = file.getAbsolutePath();
@@ -131,19 +162,19 @@ public class UseCaseDiagramUISelectable extends JFrame {
                     }
 
                     try {
-                        float width=canvas.getWidth();
-                        float height=canvas.getHeight();
+                        float width=frame.getWidth();
+                        float height=frame.getHeight();
                         if (filePath.endsWith(".jpeg")) {
-                            project.exportToJPEG(filePath, width, height, UseCaseDiagramUISelectable.this);
+                            project.exportToJPEG(filePath, width, height, UseCaseDiagramUI.this);
                         } else if (filePath.endsWith(".png")) {
-                            project.exportToPNG(filePath,width,height,UseCaseDiagramUISelectable.this);
+                            project.exportToPNG(filePath,width,height,UseCaseDiagramUI.this);
                         }
-                        JOptionPane.showMessageDialog(UseCaseDiagramUISelectable.this,
+                        JOptionPane.showMessageDialog(UseCaseDiagramUI.this,
                                 "Image saved successfully!",
                                 "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(UseCaseDiagramUISelectable.this,
+                        JOptionPane.showMessageDialog(UseCaseDiagramUI.this,
                                 "Failed to save the image: " + ex.getMessage(),
                                 "Error",
                                 JOptionPane.ERROR_MESSAGE);
@@ -152,11 +183,10 @@ public class UseCaseDiagramUISelectable extends JFrame {
             }
         });
         saveProject.addActionListener(new SaveProjectActionListener());
-
         loadProject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<business.Component> components=project.loadProject(UseCaseDiagramUISelectable.this);
+                ArrayList<business.Component> components=project.loadProject(UseCaseDiagramUI.this);
                 if(components==null)
                     return;
 
@@ -198,7 +228,38 @@ public class UseCaseDiagramUISelectable extends JFrame {
                 canvas.repaint();
             }
         });
+        toCDButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!canvas.components.isEmpty()){
+                    int choice = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Do you want to save the project before moving to Class Diagram?",
+                            "Save Project",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
 
+                    if (choice == JOptionPane.YES_OPTION) {
+                        new SaveProjectActionListener();
+                        frame.dispose();
+                    } else if (choice == JOptionPane.NO_OPTION) {
+                        frame.dispose();
+                    }
+                }
+                frame.dispose();
+                new ClassDiagramUI();
+            }
+        });
+        canvas.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                mouseCoords.setText("("+e.getX()+","+e.getY()+")");
+                repaint();
+                revalidate();
+            }
+        });
         //Abandon textArea implementation...
 
 //        String[] previousText = {""};
@@ -266,12 +327,36 @@ public class UseCaseDiagramUISelectable extends JFrame {
         // Configure main frame layout
         this.setLayout(new BorderLayout());
         this.add(topPanel, BorderLayout.NORTH);
-        this.add(samplesPanel, BorderLayout.EAST);
-        this.add(canvas, BorderLayout.CENTER);
+        this.add(rightPanel, BorderLayout.EAST);
+        this.add(canvasScrollPanel, BorderLayout.CENTER);
         //this.add(bottomPanel, BorderLayout.SOUTH);
 
         this.setSize(900, 600);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Prevent automatic closing
+        //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (!canvas.components.isEmpty()) {
+                    int choice = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Do you want to save the project before exiting?",
+                            "Save Project",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
+
+                    if (choice == JOptionPane.YES_OPTION) {
+                        new SaveProjectActionListener();
+                        frame.dispose();
+                    } else if (choice == JOptionPane.NO_OPTION) {
+                        frame.dispose();
+                    }
+                }
+                else frame.dispose();
+            }
+        });
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
     }
 
@@ -302,7 +387,7 @@ public class UseCaseDiagramUISelectable extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUISelectable.this);
+            project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUI.this);
         }
     }
 
@@ -311,7 +396,13 @@ public class UseCaseDiagramUISelectable extends JFrame {
         private ArrayList<UMLComponent> components;
         private UMLComponent selectedComponent;
         private boolean resizing;
+        private final int maxWidth = 2000;
+        private final int maxHeight = 2000;
 
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(maxWidth, maxHeight);
+        }
         public UMLCanvas() {
             components = new ArrayList<>();
             selectedComponent = null;
@@ -730,6 +821,6 @@ public class UseCaseDiagramUISelectable extends JFrame {
     }
 
     public static void main(String[] args) {
-        new UseCaseDiagramUISelectable();
+        new UseCaseDiagramUI();
     }
 }
