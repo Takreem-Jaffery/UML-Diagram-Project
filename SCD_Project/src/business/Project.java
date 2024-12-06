@@ -1,9 +1,10 @@
 package business;
 
-import ui.*;
 import data.JpegImageDAO;
 import data.JsonDAO;
 import data.PngImageDAO;
+import ui.ClassDiagramUI;
+import ui.UseCaseDiagramUI;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 
 /**
  *
@@ -206,7 +206,29 @@ public class Project {
         jpegImageDAO.exportToJPEG(filePath,image);
     }
 
+    public JsonDAO getDao() {
+        return dao;
+    }
 
+    public void setDao(JsonDAO dao) {
+        this.dao = dao;
+    }
+
+    public JpegImageDAO getJpegImageDAO() {
+        return jpegImageDAO;
+    }
+
+    public void setJpegImageDAO(JpegImageDAO jpegImageDAO) {
+        this.jpegImageDAO = jpegImageDAO;
+    }
+
+    public PngImageDAO getPngImageDAO() {
+        return pngImageDAO;
+    }
+
+    public void setPngImageDAO(PngImageDAO pngImageDAO) {
+        this.pngImageDAO = pngImageDAO;
+    }
 }
 
 

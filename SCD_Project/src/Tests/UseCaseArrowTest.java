@@ -1,10 +1,12 @@
 package Test;
 
+import business.UseCaseArrow;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UseCaseArrowTest {
 

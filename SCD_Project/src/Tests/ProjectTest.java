@@ -1,5 +1,10 @@
 package Test;
 
+import business.*;
+import business.Class;
+import data.JpegImageDAO;
+import data.JsonDAO;
+import data.PngImageDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,9 +30,9 @@ class ProjectTest {
         pngImageDAO = new PngImageDAO();
         ui = new JFrame(); //creating a dummy JFrame to simulate UI actions
         project = new Project();
-        project.dao = dao; //injecting the real DAO
-        project.jpegImageDAO = jpegImageDAO;
-        project.pngImageDAO = pngImageDAO;
+        project.setDao(dao); //injecting the real DAO
+        project.setJpegImageDAO( jpegImageDAO);
+        project.setPngImageDAO( pngImageDAO);
     }
 
     @Test

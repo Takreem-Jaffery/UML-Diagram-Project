@@ -1,5 +1,9 @@
 package Test;
 
+import business.Association;
+import business.Comment;
+import business.Class;
+import business.Component;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
