@@ -2,14 +2,12 @@ package business;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.awt.*;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Actor implements Component{
     String name;
-    Point position;
+    java.awt.Point position;
 
-    public Actor(String name, Point position) {
+    public Actor(String name, java.awt.Point position) {
         this.name = name;
         this.position = position;
     }
@@ -27,11 +25,11 @@ public class Actor implements Component{
         this.name = name;
     }
 
-    public Point getPosition() {
+    public java.awt.Point getPosition() {
         return position;
     }
 
-    public void setPosition(Point position) {
+    public void setPosition(java.awt.Point position) {
         this.position = position;
     }
 

@@ -1,6 +1,6 @@
 package business;
 
-import java.awt.*;
+import java.awt.Point;
 
 public class Association implements Component{
     String type;
