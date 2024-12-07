@@ -4,8 +4,12 @@ import business.Association;
 import business.Class;
 import business.Comment;
 import business.Project;
+import business.CodeGenerator;
+import business.*;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -167,7 +171,7 @@ public class ClassDiagramUI extends JFrame {
                         if (filePath.endsWith(".jpeg")) {
                             project.exportToJPEG(filePath, width, height, ClassDiagramUI.this);
                         } else if (filePath.endsWith(".png")) {
-                            project.exportToPNG(filePath,width,height,ClassDiagramUI.this);
+                            project.exportToPNG(filePath,width,height, ClassDiagramUI.this);
                         }
                         JOptionPane.showMessageDialog(ClassDiagramUI.this,
                                 "Image saved successfully!",
@@ -204,7 +208,7 @@ public class ClassDiagramUI extends JFrame {
                         comments.add((Comment)components.get(i));
                     else
                         continue;
-                        //not a component of uml class diagram
+                    //not a component of uml class diagram
                 }
                 ArrayList<UMLComponent> comps=new ArrayList<UMLComponent>();
                 for(int i=0;i<classes.size();i++) {
@@ -231,6 +235,76 @@ public class ClassDiagramUI extends JFrame {
                 canvas.repaint();
             }
         });
+        JFrame ui=this;
+        generateCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    //String currentDirectory = System.getProperty("user.dir");
+                    //System.out.println("Current working directory: " + currentDirectory);
+
+                    //get user to select json file to convert
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Select Project File to Load");
+                    fileChooser.setFileFilter(new FileNameExtensionFilter("JSON Files", "json"));
+
+                    String filePath="";
+                    int userSelection = fileChooser.showOpenDialog(ui);
+                    if (userSelection == JFileChooser.APPROVE_OPTION) {
+                        File file = fileChooser.getSelectedFile();
+                        filePath = file.getAbsolutePath();
+
+                        // Validate file extension
+                        if (!filePath.endsWith(".json")) {
+                            JOptionPane.showMessageDialog(ui,
+                                    "Invalid file type selected. Please select a JSON file.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    }
+
+                    //get user to enter the name and file directory for output file
+                    //prompt user for file name
+                    String fileName = JOptionPane.showInputDialog(
+                            ClassDiagramUI.this,
+                            "Enter Java Output File Name:",
+                            "Generate Code",
+                            JOptionPane.PLAIN_MESSAGE
+                    );
+                    if (fileName == null || fileName.trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(ClassDiagramUI.this,
+                                "File name cannot be empty.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Select Destination");
+                    fileChooser.setFileFilter(new FileNameExtensionFilter("JAVA", "java"));
+                    fileChooser.setSelectedFile(new File(fileName));
+
+                    userSelection = fileChooser.showSaveDialog(ClassDiagramUI.this);
+                    if (userSelection == JFileChooser.APPROVE_OPTION) {
+                        File file = fileChooser.getSelectedFile();
+                        String filePathOutput = file.getAbsolutePath();
+                        if (!filePathOutput.endsWith(".java"))
+                            filePathOutput += ".java";
+
+                        CodeGenerator converter = new CodeGenerator();
+                        converter.processJson(filePath, filePathOutput);
+
+                        JOptionPane.showMessageDialog(ClassDiagramUI.this,
+                                "Java code generated successfully!",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         toUCDButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -244,7 +318,7 @@ public class ClassDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        project.saveCDProject(classes,associations,comments,ClassDiagramUI.this); //probably send class + comment + association list
+                        new SaveProjectActionListener();
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();
@@ -263,67 +337,67 @@ public class ClassDiagramUI extends JFrame {
                 revalidate();
             }
         });
-//        String[] previousText = {""};
-//        final String[] currentText = {diagramNotes.getText()};
-//        diagramNotes.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                    currentText[0] = diagramNotes.getText();
-//                    //get the new text after enter was pressed
-//                    String newText;
-//                    if (previousText[0].isEmpty()) {
-//                        newText = currentText[0].substring(previousText[0].length());
-//                    } else {
-//                        //System.out.println("In here");
-//                        newText = currentText[0].substring(previousText[0].length() + 1);
-//                    }
-//                    System.out.println("New text entered: " + newText);
-//                    if (newText.equals("--")) {
-//                        classDrawPartition();
-//                    }
-//                    // Update previousText to currentText
-//                    previousText[0] = currentText[0];
-//                }
-//            }
-//        });
-//        diagramNotes.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                SwingUtilities.invokeLater(() -> {
-//                    try {
-//                        String currentText = diagramNotes.getText();
-//
-//                        // Iterate through all lines in the text area
-//                        String[] lines = currentText.split("\n");
-//                        ArrayList<String> lineList = new ArrayList<>(java.util.Arrays.asList(lines));
-//
-//                        // Iterate through canvas components to adjust partitions
-//                        // Count current number of `--` lines associated with this component
-//                        int currentPartitions = 0;
-//                        for (String line : lineList) {
-//                            if (line.trim().equals("--")) {
-//                                currentPartitions++;
-//                            }
-//                        }
-//                        classRemovePartition(currentPartitions);
-//
-//                    } catch (Exception ex) {
-//                        ex.printStackTrace();
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//
-//            }
-//        });
+        String[] previousText = {""};
+        final String[] currentText = {diagramNotes.getText()};
+        diagramNotes.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    currentText[0] = diagramNotes.getText();
+                    //get the new text after enter was pressed
+                    String newText;
+                    if (previousText[0].isEmpty()) {
+                        newText = currentText[0].substring(previousText[0].length());
+                    } else {
+                        //System.out.println("In here");
+                        newText = currentText[0].substring(previousText[0].length() + 1);
+                    }
+                    System.out.println("New text entered: " + newText);
+                    if (newText.equals("--")) {
+                        classDrawPartition();
+                    }
+                    // Update previousText to currentText
+                    previousText[0] = currentText[0];
+                }
+            }
+        });
+        diagramNotes.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        String currentText = diagramNotes.getText();
+
+                        // Iterate through all lines in the text area
+                        String[] lines = currentText.split("\n");
+                        ArrayList<String> lineList = new ArrayList<>(java.util.Arrays.asList(lines));
+
+                        // Iterate through canvas components to adjust partitions
+                        // Count current number of `--` lines associated with this component
+                        int currentPartitions = 0;
+                        for (String line : lineList) {
+                            if (line.trim().equals("--")) {
+                                currentPartitions++;
+                            }
+                        }
+                        classRemovePartition(currentPartitions);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        });
 
         // Configure main frame layout
         this.setLayout(new BorderLayout());
@@ -331,6 +405,8 @@ public class ClassDiagramUI extends JFrame {
         this.add(rightPanel, BorderLayout.EAST);
         this.add(canvasScrollPanel, BorderLayout.CENTER);
         //this.add(bottomPanel, BorderLayout.SOUTH);
+
+
 
         this.setSize(900, 600);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Prevent automatic closing
@@ -348,7 +424,7 @@ public class ClassDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        project.saveCDProject(classes,associations,comments,ClassDiagramUI.this);
+                        new SaveProjectActionListener();
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();
@@ -460,23 +536,24 @@ public class ClassDiagramUI extends JFrame {
 
             // Add mouse listeners for interaction
             this.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    selectComponentAt(e.getPoint());
-
-                    if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null && (selectedComponent.type=="Class" ||selectedComponent.type=="Comment")) {
-                        showContextMenu(e);
-                    }
-
-                    if (selectedComponent != null && (selectedComponent.type != "Class" && selectedComponent.type != "Comment") && selectedComponent.isInResizeHandle(e.getPoint())) {
-                        resizing = true;
-                    }
-                }
+//                @Override
+//                public void mousePressed(MouseEvent e) {
+//                    selectComponentAt(e.getPoint());
+//
+//                    if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null && (selectedComponent.type == "Class" || selectedComponent.type == "Comment")) {
+//                        showContextMenu(e);
+//                    }
+//
+//                    if (selectedComponent != null && (selectedComponent.type != "Class" && selectedComponent.type != "Comment") && selectedComponent.isInResizeHandle(e.getPoint())) {
+//                        resizing = true;
+//                    }
+//
+//                }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     resizing = false;
-                    if(selectedComponent!=null) {
+                    if (selectedComponent != null) {
                         if (selectedComponent.type != "Class" && selectedComponent.type != "Comment") {
                             if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
                                 int response = JOptionPane.showConfirmDialog(
@@ -496,6 +573,37 @@ public class ClassDiagramUI extends JFrame {
                     }
                 }
 
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    selectComponentAt(e.getPoint());
+                    // selectComponentAt(e.getPoint());
+
+                    if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null && (selectedComponent.type == "Class" || selectedComponent.type == "Comment")) {
+                        showContextMenu(e);
+                    }
+
+                    if (selectedComponent != null && (selectedComponent.type != "Class" && selectedComponent.type != "Comment") && selectedComponent.isInResizeHandle(e.getPoint())) {
+                        resizing = true;
+                    }
+                    // Check if right-click is on an attribute or method
+                    if (selectedComponent != null) {
+                        // Right-click on attribute
+                        if (selectedComponent.containsAttributeOrMethod(e.getPoint(), "attribute")) {
+                            // Show context menu to edit attribute
+                            showEditAttributeMenu(e);
+                        }
+                        // Right-click on method
+                        else if (selectedComponent.containsAttributeOrMethod(e.getPoint(), "method")) {
+                            // Show context menu to edit method
+                            showEditMethodMenu(e);
+                        }
+                        // Handle class or comment specific logic
+                        else if (SwingUtilities.isRightMouseButton(e) && (selectedComponent.type.equals("Class") || selectedComponent.type.equals("Comment"))) {
+                            showContextMenu(e);
+                        }
+                    }
+                }
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (selectedComponent != null && e.getClickCount() == 2) {
@@ -555,7 +663,7 @@ public class ClassDiagramUI extends JFrame {
                 JMenuItem makeAbstract = new JMenuItem("Make Abstract");
 
                 addAttribute.addActionListener(ev -> {
-                    String attribute = JOptionPane.showInputDialog("Enter attribute (e.g., +attribute1):");
+                    String attribute = JOptionPane.showInputDialog("Enter attribute (e.g., + attribute1):");
                     if (attribute != null && selectedComponent != null) {
                         selectedComponent.addAttribute(attribute);
                         repaint();
@@ -563,7 +671,7 @@ public class ClassDiagramUI extends JFrame {
                 });
 
                 addMethod.addActionListener(ev -> {
-                    String method = JOptionPane.showInputDialog("Enter method (e.g., +operation1()):");
+                    String method = JOptionPane.showInputDialog("Enter method (e.g., + operation1()):");
                     if (method != null && selectedComponent != null) {
                         selectedComponent.addMethod(method);
                         repaint();
@@ -652,6 +760,45 @@ public class ClassDiagramUI extends JFrame {
             }
             repaint();
         }
+        private void showEditAttributeMenu(MouseEvent e) {
+            JPopupMenu menu = new JPopupMenu();
+            JMenuItem renameAttribute = new JMenuItem("Rename Attribute");
+            renameAttribute.addActionListener(ev -> {
+                String newAttribute = JOptionPane.showInputDialog("Edit attribute name:");
+                if (newAttribute != null) {
+                    // Find which attribute is clicked and rename it
+                    for (int i = 0; i < selectedComponent.attributes.size(); i++) {
+                        if (new Rectangle(selectedComponent.position.x + 5, selectedComponent.position.y + 35 + i * 15, selectedComponent.maxWidth, 15).contains(e.getPoint())) {
+                            selectedComponent.attributes.set(i, newAttribute); // Rename attribute
+                            repaint();
+                            break;
+                        }
+                    }
+                }
+            });
+            menu.add(renameAttribute);
+            menu.show(this, e.getX(), e.getY());
+        }
+
+        private void showEditMethodMenu(MouseEvent e) {
+            JPopupMenu menu = new JPopupMenu();
+            JMenuItem renameMethod = new JMenuItem("Rename Method");
+            renameMethod.addActionListener(ev -> {
+                String newMethod = JOptionPane.showInputDialog("Edit method name:");
+                if (newMethod != null) {
+                    // Find which method is clicked and rename it
+                    for (int i = 0; i < selectedComponent.methods.size(); i++) {
+                        if (new Rectangle(selectedComponent.position.x + 5, selectedComponent.position.y + 45 + selectedComponent.attributes.size() * 15 + i * 15, selectedComponent.maxWidth, 15).contains(e.getPoint())) {
+                            selectedComponent.methods.set(i, newMethod); // Rename method
+                            repaint();
+                            break;
+                        }
+                    }
+                }
+            });
+            menu.add(renameMethod);
+            menu.show(this, e.getX(), e.getY());
+        }
 
         // Select a component at a specific point
         private void selectComponentAt(Point point) {
@@ -668,7 +815,7 @@ public class ClassDiagramUI extends JFrame {
             selectedComponent = null;
         }
 
-//        @Override
+        //        @Override
 //        protected void paintComponent(Graphics g) {
 //            super.paintComponent(g);
 //            for (UMLComponent component : components) {
@@ -813,7 +960,7 @@ public class ClassDiagramUI extends JFrame {
         private int maxWidth;
         private int maxHeight;
         private String text;
-
+        boolean isAbstract;
         public UMLComponent(String type, Point position) {
             this.type = type;
             this.position = position;
@@ -826,6 +973,7 @@ public class ClassDiagramUI extends JFrame {
             maxHeight=50;
             maxWidth=100;
             text="";
+            isAbstract = false;
         }
 
         public UMLComponent(String type, Point start, Point end) {
@@ -916,6 +1064,32 @@ public class ClassDiagramUI extends JFrame {
             attributes.add(attribute);
             classes.get(id).addAttribute(attribute);
         }
+        public boolean containsAttributeOrMethod(Point point, String type) {
+            int x = position.x;
+            int y = position.y;
+            int width = maxWidth;
+
+            // Determine y position of attributes or methods
+            int startY = y + 35;
+
+            if (type.equals("attribute")) {
+                for (String attribute : attributes) {
+                    if (new Rectangle(x + 5, startY, width, 15).contains(point)) {
+                        return true;
+                    }
+                    startY += 15;
+                }
+            } else if (type.equals("method")) {
+                startY = y + 45 + attributes.size() * 15;
+                for (String method : methods) {
+                    if (new Rectangle(x + 5, startY, width, 15).contains(point)) {
+                        return true;
+                    }
+                    startY += 15;
+                }
+            }
+            return false;
+        }
 
         public void addMethod(String method) {
             methods.add(method);
@@ -923,13 +1097,16 @@ public class ClassDiagramUI extends JFrame {
         }
 
         public void makeInterface() {
-            name = "<<interface>> " + name;
+            if (!name.startsWith("<<interface>> ")) { // Prevent duplicate prefix
+                name = "<<interface>> " + name;
+            }
             classes.get(id).setName(name);
         }
 
         public void makeAbstract() {
-            name = "<html><i>" + name + "</i></html>";
+            name = name; // Keep the name unchanged
             classes.get(id).setName(name);
+            isAbstract = true; // Use a flag to indicate the abstract state
         }
 
         public void setCommentText(String newContent) {
@@ -955,18 +1132,28 @@ public class ClassDiagramUI extends JFrame {
                 case "Class":
                     int boxWidth = calcMaxWidth(g);
                     int totalHeight = calcMaxHeight(g);
-
                     // Draw the class box
                     g.drawRect(x, y, boxWidth, totalHeight);
-
                     // Draw the name section
                     g.drawLine(x, y + 20, x + boxWidth, y + 20);
+                    // Set font for name (italic if abstract)
+                    Font originalFont = g.getFont();
+                    if (isAbstract) {
+                        g.setFont(originalFont.deriveFont(Font.ITALIC));
 
+                    }
+                    // Reset font after drawing the name
+                    g.setFont(originalFont);
+                    //g.drawString(name, x + 10, y + 15);
                     // Draw the attributes section
                     if (!attributes.isEmpty()) {
                         g.drawLine(x, y + 30 + attributes.size() * 15, x + boxWidth, y + 30 + attributes.size() * 15);
                         int attrY = y + 35;
                         for (String attribute : attributes) {
+                            // If abstract, set font to italic
+                            if (isAbstract) {
+                                g.setFont(originalFont.deriveFont(Font.ITALIC));
+                            }
                             g.drawString(attribute, x + 5, attrY);
                             attrY += 15;
                         }
@@ -988,6 +1175,7 @@ public class ClassDiagramUI extends JFrame {
                             g.drawLine(x, partitionY + 15, x + boxWidth, partitionY + 15);
                         }
                     }
+
                     break;
                 case "Association":
                     g.drawLine(start.x, start.y, end.x, end.y);
@@ -1031,7 +1219,7 @@ public class ClassDiagramUI extends JFrame {
                     break;
             }
             if (position != null)
-                g.drawString(name, x + 10, y + 10);
+                g.drawString(name, x + 10, y + 15);
             if (drawPartition) {
                 noOfPartitions++;
                 drawPartition = false;

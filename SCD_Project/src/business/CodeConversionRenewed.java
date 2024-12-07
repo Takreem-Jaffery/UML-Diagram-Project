@@ -4,7 +4,7 @@ import com.google.gson.*;
 import java.io.*;
 import java.util.*;
 
-public class CodeGenerator {
+public class CodeConversionRenewed {
 
     private Map<String, ClassInfo> classInfoMap = new LinkedHashMap<>();
     private List<RelationshipInfo> relationships = new ArrayList<>();
@@ -295,6 +295,18 @@ public class CodeGenerator {
 //            System.err.println("Unknown relationship type: " + relationship.type);
 //    }
 //}
+
+
+    public static void main(String[] args) {
+        try {
+            String currentDirectory = System.getProperty("user.dir");
+            System.out.println("Current working directory: " + currentDirectory);
+            CodeConversionRenewed converter = new CodeConversionRenewed();
+            converter.processJson("C:\\Users\\Dell\\Desktop\\AnimalCD.json", "output.java");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static class ClassInfo {
         String className;

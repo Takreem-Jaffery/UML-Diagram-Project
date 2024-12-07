@@ -35,7 +35,6 @@ public class UseCaseDiagramUI extends JFrame {
     JButton saveImage;
     JButton saveProject;
     JButton loadProject;
-    JButton generateCode;
     JButton toCDButton;
     JPanel topButtonPanel;
     JPanel topRightButtonPanel;
@@ -54,7 +53,6 @@ public class UseCaseDiagramUI extends JFrame {
         saveImage=new JButton("\uD83D\uDDBC\uFE0F Save Image");
         saveProject=new JButton("\uD83D\uDCBE Save Project");
         loadProject= new JButton("⏫ Load Project");
-        generateCode=new JButton("\uD83D\uDC68\u200D\uD83D\uDCBB Generate Code");
         toCDButton=new JButton("Class Diagram ➡\uFE0F");
 
         pageTitlePanel = new JPanel();
@@ -93,7 +91,6 @@ public class UseCaseDiagramUI extends JFrame {
         topButtonPanel.add(saveImage);
         topButtonPanel.add(saveProject);
         topButtonPanel.add(loadProject);
-        topButtonPanel.add(generateCode);
         topRightButtonPanel.add(toCDButton);
         topPanel.add(topButtonPanel,BorderLayout.WEST);
         topPanel.add(pageTitlePanel,BorderLayout.CENTER);
