@@ -5,59 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29b964b9-7844-4a9d-b67b-23621621525e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_datatype_json.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/ActorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ActorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/AssociationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/AssociationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/ClassDiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ClassDiagramTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/ClassTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ClassTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/CodeGeneratorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/CodeGeneratorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/CommentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/CommentTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/ComponentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ComponentTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/DiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/DiagramTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/ModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ModelTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/ProjectTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ProjectTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/UseCaseArrowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/UseCaseArrowTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/UseCaseDiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/UseCaseDiagramTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Tests/UsecaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/UsecaseTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCD_Project_Git.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project_Git.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Class.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Class.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Component.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Component.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Usecase.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/business/Usecase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$SamplesPanel$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$SamplesPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLCanvas$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLCanvas$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLCanvas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows$UMLComponent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableMoveableArrows.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableRectangle$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableRectangle$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizableRectangle.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$SamplesPanel$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$SamplesPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLCanvas$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLCanvas$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLCanvas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI$UMLComponent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/org/example/ResizeableClassAndCommentUI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLCanvas.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLCanvas.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLClass$ClickListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLClass$DragListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI$UMLClass.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$SamplesPanel$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$SamplesPanel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLCanvas$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLCanvas$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLCanvas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable$UMLComponent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/ui/ClassDiagramUISelectable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ActorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ActorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/AssociationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/AssociationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ClassDiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ClassDiagramTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ClassTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ClassTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/CodeGeneratorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/CodeGeneratorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/CommentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/CommentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ComponentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ComponentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/DiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/DiagramTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ModelTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ProjectTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ProjectTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/business/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/business/Actor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +26,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -79,28 +38,28 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "aneezajunaid"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;aneezajunaid&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Takreem-Jaffery/UML-Diagram-Project",
-    "accountId": "28b82537-6951-4073-aaf2-3955d71e316b"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Takreem-Jaffery/UML-Diagram-Project&quot;,
+    &quot;accountId&quot;: &quot;28b82537-6951-4073-aaf2-3955d71e316b&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "Takreem-Jaffery",
-    "repository": "UML-Diagram-Project"
+    &quot;owner&quot;: &quot;Takreem-Jaffery&quot;,
+    &quot;repository&quot;: &quot;UML-Diagram-Project&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -109,38 +68,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ClassDiagramUI.executor": "Run",
-    "Application.ClassDiagramUISelectable.executor": "Run",
-    "Application.UseCaseDiagramUI.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.ActorTest.executor": "Run",
-    "JUnit.AssociationTest.executor": "Run",
-    "JUnit.ClassDiagramTest.executor": "Run",
-    "JUnit.ClassTest.executor": "Run",
-    "JUnit.CodeGeneratorTest.executor": "Run",
-    "JUnit.CommentTest.executor": "Run",
-    "JUnit.ComponentTest.executor": "Run",
-    "JUnit.DiagramTest.executor": "Run",
-    "JUnit.ModelTest.executor": "Run",
-    "JUnit.ProjectTest.executor": "Run",
-    "JUnit.UseCaseArrowTest.executor": "Run",
-    "JUnit.UseCaseDiagramTest.executor": "Run",
-    "JUnit.UsecaseTest.executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "#1 on Testing",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Dell/IdeaProjects/SCD_Project_Git/SCD_Project",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ClassDiagramUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ClassDiagramUISelectable.executor&quot;: &quot;Run&quot;,
+    &quot;Application.UseCaseDiagramUI.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.ActorTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AssociationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ClassDiagramTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ClassTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CodeGeneratorTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CommentTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ComponentTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DiagramTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ModelTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ProjectTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UseCaseArrowTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UseCaseDiagramTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UsecaseTest.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#1 on Testing&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dell/IdeaProjects/SCD_Project_Git/SCD_Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="business" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

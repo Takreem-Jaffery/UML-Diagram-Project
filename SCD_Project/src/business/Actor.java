@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.awt.*;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Actor implements Component{
     String name;
     Point position;
