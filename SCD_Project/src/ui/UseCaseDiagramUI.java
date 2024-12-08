@@ -432,7 +432,7 @@ public class UseCaseDiagramUI extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     resizing = false;
-                    selectedComponent=null;
+                    //selectedComponent=null;
                     if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
                         int response = JOptionPane.showConfirmDialog(
                                 UMLCanvas.this,
@@ -817,8 +817,11 @@ public class UseCaseDiagramUI extends JFrame {
             }switch (type) {
                 case "Usecase":
                     g2d.setStroke(new BasicStroke());
-                    g.drawOval(x, y, 100, 50);
-                    g.drawString(name, x+20, y+30);
+                    int padding = 20; // Extra space around the text
+                    int ovalWidth = textWidth + padding; // Adjust oval width
+                    int ovalHeight = textHeight + padding; // Adjust oval height
+                    g.drawOval(x, y, ovalWidth, ovalHeight);
+                    g.drawString(name, x + (ovalWidth - textWidth) / 2, y + (ovalHeight + textHeight / 2) / 2);
                     break;
                 case "Actor":
                     g2d.setStroke(new BasicStroke());
