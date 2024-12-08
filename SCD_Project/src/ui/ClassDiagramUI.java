@@ -590,7 +590,7 @@ public class ClassDiagramUI extends JFrame {
                         resizing = true;
                     }
                     // Check if right-click is on an attribute or method
-                    if (selectedComponent.type=="Class" && selectedComponent != null) {
+                    if (selectedComponent != null && selectedComponent.type=="Class") {
                         // Right-click on attribute
                         if (selectedComponent.containsAttributeOrMethod(e.getPoint(), "attribute")) {
                             // Show context menu to edit attribute
@@ -888,6 +888,7 @@ public class ClassDiagramUI extends JFrame {
             else if (y < 200) return "Aggregation";
             else if (y < 250) return "Composition";
             else if (y < 300) return "Comment";
+            else if(y<370) return "Comment Line";
             return null;
         }
 
@@ -897,40 +898,40 @@ public class ClassDiagramUI extends JFrame {
             drawSamples(g);
         }
 
-        // Draw static samples
+        //Draw samples
         private void drawSamples(Graphics g) {
             int x = 10, y = 10;
             g.setColor(Color.BLACK);
 
-            // Class
+            //Class
             g.drawRect(x, y, 100, 50);
             g.drawLine(x, y + 15, x + 100, y + 15);
             g.drawString("Class", x + 35, y + 10);
 
-            // Association
+            //Association
             y += 50;
             g.drawLine(x, y + 25, x + 100, y + 25);
             g.drawString("Association", x + 35, y + 10);
 
-            // Inheritance
+            //Inheritance
             y += 50;
             g.drawLine(x, y + 25, x + 100, y + 25);
             g.drawPolygon(new int[]{x + 100, x + 105, x + 100}, new int[]{y + 20, y + 25, y + 30}, 3);
             g.drawString("Inheritance", x + 25, y + 10);
 
-            // Aggregation
+            //Aggregation
             y += 50;
             g.drawLine(x, y + 25, x + 100, y + 25);
             g.drawPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
             g.drawString("Aggregation", x + 20, y + 10);
 
-            // Composition
+            //Composition
             y += 50;
             g.drawLine(x, y + 25, x + 100, y + 25);
             g.fillPolygon(new int[]{x + 100, x + 105, x + 110, x + 105}, new int[]{y + 25, y + 20, y + 25, y + 30}, 4);
             g.drawString("Composition", x + 20, y + 10);
 
-            // Comment
+            //Comment
             y += 50;
             //g.drawRect(x, y, 100, 50);
             //g.drawString("Comment...", x + 10, y + 25);
@@ -945,6 +946,13 @@ public class ClassDiagramUI extends JFrame {
             g.drawPolygon(commentX,commentY,5);
             g.drawPolygon(triangleX,triangleY,3);
             g.drawString(commentText,x+10,y+25);
+
+            //Comment Line
+            y+=70;
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+            g.drawLine(x, y + 25, x + 100, y + 25);
+            g.drawString("Comment Line", x + 25, y + 10);
         }
     }
 
@@ -1221,6 +1229,13 @@ public class ClassDiagramUI extends JFrame {
                     g.drawPolygon(commentX,commentY,5);
                     g.drawPolygon(triangleX,triangleY,3);
                     g.drawString(this.text,x+10,y+25);
+                    break;
+                case "Comment Line":
+                    Graphics2D g2d=(Graphics2D)g;
+                    g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+                    g.drawLine(start.x, start.y, end.x, end.y);
+                    g2d.setStroke(new BasicStroke());
+
                     break;
             }
             if (position != null && type=="Comment")
