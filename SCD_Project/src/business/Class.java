@@ -17,6 +17,7 @@ public class Class implements Component {
     @JsonProperty("methods")
     private ArrayList<String> methods;
     private Point position;
+    private String state;
 
 
     public Class(String name, int noOfPartitions, boolean drawPartition, Point position) {
@@ -25,6 +26,7 @@ public class Class implements Component {
         this.methods = new ArrayList<>();
         this.noOfPartitions = noOfPartitions;
         this.position = position;
+        this.state="";
     }
 
     public Class() {
@@ -33,6 +35,15 @@ public class Class implements Component {
         methods=new ArrayList<>();
         noOfPartitions=0;
         position=new Point(100,100);
+        state="";
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getDiagramNotes(){

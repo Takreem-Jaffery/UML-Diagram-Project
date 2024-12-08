@@ -218,6 +218,9 @@ public class ClassDiagramUI extends JFrame {
                     c.name=classes.get(i).getName();
                     c.attributes=classes.get(i).getAttributes();
                     c.methods=classes.get(i).getMethods();
+                    String state=classes.get(i).getState();
+                    if(Objects.equals(state, "Abstract"))
+                        c.isAbstract=true;
                     comps.add(c);
                 }
                 for(int i=0;i<associations.size();i++){
@@ -587,7 +590,7 @@ public class ClassDiagramUI extends JFrame {
                         resizing = true;
                     }
                     // Check if right-click is on an attribute or method
-                    if (selectedComponent != null) {
+                    if (selectedComponent.type=="Class" && selectedComponent != null) {
                         // Right-click on attribute
                         if (selectedComponent.containsAttributeOrMethod(e.getPoint(), "attribute")) {
                             // Show context menu to edit attribute
@@ -960,7 +963,7 @@ public class ClassDiagramUI extends JFrame {
         private int maxWidth;
         private int maxHeight;
         private String text;
-        boolean isAbstract;
+        public boolean isAbstract;
         public UMLComponent(String type, Point position) {
             this.type = type;
             this.position = position;
@@ -1065,6 +1068,8 @@ public class ClassDiagramUI extends JFrame {
             classes.get(id).addAttribute(attribute);
         }
         public boolean containsAttributeOrMethod(Point point, String type) {
+
+
             int x = position.x;
             int y = position.y;
             int width = maxWidth;
@@ -1101,12 +1106,14 @@ public class ClassDiagramUI extends JFrame {
                 name = "<<interface>> " + name;
             }
             classes.get(id).setName(name);
+            classes.get(id).setState("Interface");
         }
 
         public void makeAbstract() {
             name = name; // Keep the name unchanged
             classes.get(id).setName(name);
             isAbstract = true; // Use a flag to indicate the abstract state
+            classes.get(id).setState("Abstract");
         }
 
         public void setCommentText(String newContent) {
