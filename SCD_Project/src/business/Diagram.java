@@ -1,15 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package business;
 
 /**
- *
- * @author hp
+ * The Diagram interface represents a generic diagram in the system.
+ * It serves as a base for different diagram types, such as UML diagrams, use case diagrams, etc.
+ * The interface defines a method for displaying the diagram.
  */
-// Diagram Interface
 public interface Diagram {
+
+    /**
+     * Displays the diagram. The exact implementation of the display may vary depending on the specific diagram type.
+     */
     void display();
 }
-

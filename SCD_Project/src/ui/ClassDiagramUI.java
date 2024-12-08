@@ -19,7 +19,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
+/**
+ * The {@code ClassDiagramUI} class represents the user interface for creating and managing UML Class Diagrams.
+ * It provides functionality for:
+ * <ul>
+ *     <li>Drawing UML class diagrams</li>
+ *     <li>Saving and loading projects</li>
+ *     <li>Exporting diagrams as images</li>
+ *     <li>Generating Java code from UML diagrams</li>
+ *     <li>Switching between Class Diagrams and Use Case Diagrams</li>
+ * </ul>
+ * This class extends {@link JFrame} and includes various UI components and event listeners to facilitate user interactions.
+ */
 public class ClassDiagramUI extends JFrame {
     JPanel pageTitlePanel;
     JPanel topPanel;
@@ -46,6 +57,9 @@ public class ClassDiagramUI extends JFrame {
     JLabel mouseCoords;
     JPanel bottomCoords;
 
+    /**
+     * Constructs a new {@code ClassDiagramUI} instance and initializes the UI components and event listeners.
+     */
     public ClassDiagramUI() {
 
         //business layer objects
@@ -441,6 +455,14 @@ public class ClassDiagramUI extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Exports the current UML diagram to a BufferedImage.
+     * The diagram is rendered as an image with the specified width and height.
+     *
+     * @param width  The width of the resulting image.
+     * @param height The height of the resulting image.
+     * @return A BufferedImage representing the diagram.
+     */
     //used to save image in project class
     public BufferedImage exportToBufferedImage(float width, float height) {
         // Create a buffered image of the diagram's exact size
@@ -464,7 +486,20 @@ public class ClassDiagramUI extends JFrame {
 
         return image;
     }
+    /**
+     * ActionListener for saving the UML class diagram project.
+     * This listener triggers the save process of the current diagram's
+     * classes, associations, and comments to the project file.
+     */
     private class SaveProjectActionListener implements ActionListener {
+        /**
+         * Invoked when the save button is clicked.
+         * It calls the saveCDProject method in the project object to save
+         * the current diagram data (classes, associations, comments)
+         * into the project file.
+         *
+         * @param e The action event triggered by the button click.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -473,7 +508,11 @@ public class ClassDiagramUI extends JFrame {
         }
     }
 
-
+    /**
+     * Draws a partition line for the class in the UML diagram.
+     * It identifies the class name from the diagram notes and updates
+     * the associated UMLComponent to draw a partition line below it.
+     */
     void classDrawPartition() {
         ArrayList<UMLComponent> comps = canvas.components;
         try {
@@ -494,7 +533,13 @@ public class ClassDiagramUI extends JFrame {
         }
     }
 
-
+    /**
+     * Removes a partition line from a class in the UML diagram.
+     * It checks the current number of partitions and updates the UMLComponent
+     * accordingly, repainting the canvas to reflect the changes.
+     *
+     * @param currentPartitions The number of partitions to be updated for the class.
+     */
     void classRemovePartition(int currentPartitions) {
         ArrayList<UMLComponent> comps = canvas.components;
         try {
@@ -521,6 +566,12 @@ public class ClassDiagramUI extends JFrame {
         }
     }
 
+    /**
+     * A custom JPanel that provides a canvas for displaying draggable, editable,
+     * and deletable UML components such as classes, comments, and associations.
+     * It supports interaction with components via mouse events, including resizing,
+     * moving, and context menu actions.
+     */
     //Canvas to display draggable, editable, and deletable components
     public class UMLCanvas extends JPanel {
         private ArrayList<UMLComponent> components;
@@ -529,10 +580,19 @@ public class ClassDiagramUI extends JFrame {
         private final int maxWidth = 2000;
         private final int maxHeight = 2000;
 
+        /**
+         * Returns the preferred size of the canvas.
+         *
+         * @return The preferred size of the canvas, set to a maximum width and height.
+         */
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(maxWidth, maxHeight);
         }
+        /**
+         * Constructs a new UMLCanvas and initializes necessary fields.
+         * Sets up mouse listeners for interaction with components.
+         */
         public UMLCanvas() {
             components = new ArrayList<>();
             selectedComponent = null;
@@ -644,6 +704,12 @@ public class ClassDiagramUI extends JFrame {
                 }
             });
         }
+        /**
+         * Displays a context menu when the user right-clicks on a selected component.
+         * The menu offers options such as renaming, deleting, or editing the component.
+         *
+         * @param e The mouse event triggered by the right-click.
+         */
         private void showContextMenu(MouseEvent e) {
             JPopupMenu menu = new JPopupMenu();
 
@@ -736,6 +802,11 @@ public class ClassDiagramUI extends JFrame {
             //Display the menu
             menu.show(this, e.getX(), e.getY());
         }
+        /**
+         * Creates a new UML component at a default position on the canvas.
+         *
+         * @param type The type of the component to create (e.g., "Class", "Comment").
+         */
         //Create a new component at a default position
         public void createNewComponent(String type) {
             if (type == "Class" || type == "Comment") {
@@ -765,6 +836,11 @@ public class ClassDiagramUI extends JFrame {
             }
             repaint();
         }
+        /**
+         * Displays a context menu for editing an attribute of a class.
+         *
+         * @param e The mouse event triggered by right-clicking on an attribute.
+         */
         private void showEditAttributeMenu(MouseEvent e) {
             JPopupMenu menu = new JPopupMenu();
             JMenuItem renameAttribute = new JMenuItem("Rename Attribute");
@@ -784,7 +860,11 @@ public class ClassDiagramUI extends JFrame {
             menu.add(renameAttribute);
             menu.show(this, e.getX(), e.getY());
         }
-
+        /**
+         * Displays a context menu for editing a method of a class.
+         *
+         * @param e The mouse event triggered by right-clicking on a method.
+         */
         private void showEditMethodMenu(MouseEvent e) {
             JPopupMenu menu = new JPopupMenu();
             JMenuItem renameMethod = new JMenuItem("Rename Method");
@@ -804,7 +884,11 @@ public class ClassDiagramUI extends JFrame {
             menu.add(renameMethod);
             menu.show(this, e.getX(), e.getY());
         }
-
+        /**
+         * Selects a component at the specified point on the canvas.
+         *
+         * @param point The point to check for a component.
+         */
         // Select a component at a specific point
         private void selectComponentAt(Point point) {
             for (UMLComponent component : components) {
@@ -819,14 +903,11 @@ public class ClassDiagramUI extends JFrame {
             }
             selectedComponent = null;
         }
-
-        //        @Override
-//        protected void paintComponent(Graphics g) {
-//            super.paintComponent(g);
-//            for (UMLComponent component : components) {
-//                component.draw(g);
-//            }
-//        }
+        /**
+         * Paints the canvas, drawing the grid and UML components.
+         *
+         * @param g The Graphics object used for painting the canvas.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -859,11 +940,20 @@ public class ClassDiagramUI extends JFrame {
 
 
     }
-
+    /**
+     * The SamplesPanel class is a JPanel that displays a set of UML component samples (e.g., Class, Association,
+     * Inheritance, Aggregation, Composition, Comment, Comment Line) that can be clicked to add new components to a UML canvas.
+     * The panel listens for mouse clicks and determines which sample the user clicked on, then creates the corresponding
+     * UML component on the provided UMLCanvas.
+     */
     // Panel to display static samples
     public class SamplesPanel extends JPanel {
         private UMLCanvas canvas;
-
+        /**
+         * Constructs a SamplesPanel with the specified UMLCanvas.
+         *
+         * @param canvas the UMLCanvas to which new components will be added when clicked
+         */
         public SamplesPanel(UMLCanvas canvas) {
             this.canvas = canvas;
             this.setPreferredSize(new Dimension(150, 0));
@@ -880,7 +970,12 @@ public class ClassDiagramUI extends JFrame {
                 }
             });
         }
-
+        /**
+         * Detects which UML sample was clicked based on the given point.
+         *
+         * @param point the point where the mouse was clicked
+         * @return the type of UML component (e.g., "Class", "Association", etc.) or null if no component is clicked
+         */
         // Detect which sample is clicked
         private String detectSampleClick(Point point) {
             int y = point.y;
@@ -893,13 +988,23 @@ public class ClassDiagramUI extends JFrame {
             else if(y<370) return "Comment Line";
             return null;
         }
-
+        /**
+         * Paints the UML component samples onto the panel. This method draws the shapes and labels for each component.
+         *
+         * @param g the Graphics object used to draw the samples
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             drawSamples(g);
         }
 
+        /**
+         * Draws the UML component samples on the panel, including Class, Association, Inheritance, Aggregation, Composition,
+         * Comment, and Comment Line. Each sample is drawn with its corresponding label.
+         *
+         * @param g the Graphics object used to draw the samples
+         */
         //Draw samples
         private void drawSamples(Graphics g) {
             int x = 10, y = 10;
@@ -958,6 +1063,11 @@ public class ClassDiagramUI extends JFrame {
         }
     }
 
+    /**
+     * The UMLComponent class is a class that draws a set of UML components (e.g., Class, Association,
+     * Inheritance, Aggregation, Composition, Comment, Comment Line)  onto the canvas, that can be clicked to edit or delete.
+     *
+     */
     // UML Component class
     public class UMLComponent {
         private String type;
@@ -974,6 +1084,11 @@ public class ClassDiagramUI extends JFrame {
         private int maxHeight;
         private String text;
         public boolean isAbstract;
+        /**
+         * Constructs a UML component with the specified type and position.
+         * @param type the type of the UML component (e.g., "Class", "Association", etc.)
+         * @param position the position of the component in the form of a Point (x, y).
+         */
         public UMLComponent(String type, Point position) {
             this.type = type;
             this.position = position;
@@ -988,7 +1103,12 @@ public class ClassDiagramUI extends JFrame {
             text="";
             isAbstract = false;
         }
-
+        /**
+         * Constructs a UML component with the specified type and start/end points for line-based components.
+         * @param type the type of the UML component (e.g., "Association", "Inheritance", etc.)
+         * @param start the starting point of the component (e.g., for associations, lines, etc.)
+         * @param end the ending point of the component (e.g., for associations, lines, etc.)
+         */
         public UMLComponent(String type, Point start, Point end) {
             this.type = type;
             this.start = start;
@@ -997,9 +1117,17 @@ public class ClassDiagramUI extends JFrame {
             this.position = null;
             noOfPartitions = 0;
         }
+        /**
+         * Gets the type of the UML component.
+         * @return the type of the component.
+         */
         public String getType() {
             return type;
         }
+        /**
+         * Moves the non-line based UML component  to a new position, centering the component on the new point.
+         * @param newPoint the new point to move the component to.
+         */
         public void move(Point newPoint) {
             position = new Point(newPoint.x - 50, newPoint.y - 25); // Center the drag
             if(type=="Class")
@@ -1007,7 +1135,10 @@ public class ClassDiagramUI extends JFrame {
             else
                 comments.get(id).setPosition(position);
         }
-
+        /**
+         * Moves the line-based UML component (e.g., Association, Inheritance etc) to a new position.
+         * @param newPoint the new point to move the line to.
+         */
         public void moveLine(Point newPoint) {
             int dx = newPoint.x - start.x;
             int dy = newPoint.y - start.y;
@@ -1016,27 +1147,45 @@ public class ClassDiagramUI extends JFrame {
             associations.get(id).setStartPoint(start);
             associations.get(id).setEndPoint(end);
         }
-
+        /**
+         * Checks if the given point is inside the bounds of the UML component.
+         * @param point the point to check.
+         * @return true if the point is inside the component's bounds, false otherwise.
+         */
         public boolean contains(Point point) {
             return point.x >= position.x && point.x <= position.x + maxWidth
                     && point.y >= position.y && point.y <= position.y + maxHeight;
         }
-
+        /**
+         * Checks if the given point is inside a line-based component (e.g., Association).
+         * @param point the point to check.
+         * @return true if the point is inside the line's bounds, false otherwise.
+         */
         public boolean containsLine(Point point) {
             return new Rectangle(start.x - 5, start.y - 5, 10, 10).contains(point) ||
                     new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
         }
-
+        /**
+         * Checks if the given point is within the resize handle of the UML component.
+         * @param point the point to check.
+         * @return true if the point is inside the resize handle, false otherwise.
+         */
         public boolean isInResizeHandle(Point point) {
             return new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
         }
-
+        /**
+         * Resizes the UML component by adjusting its end point.
+         * @param point the new end point for resizing.
+         */
         public void resize(Point point) {
             end.setLocation(point);
             Association a=associations.get(id);
             a.setEndPoint(end);
         }
-
+        /**
+         * Sets the name of the UML component and updates it in the respective list.
+         * @param name the new name for the UML component.
+         */
         public void setName(String name) {
             this.name = name;
             if(type=="Class") {
@@ -1051,6 +1200,11 @@ public class ClassDiagramUI extends JFrame {
                 a.setName(name);
             }
         }
+        /**
+         * Calculates the maximum width required for the UML component, based on its name, attributes, and methods.
+         * @param g the Graphics object used to measure text width.
+         * @return the maximum width required for the component.
+         */
         public int calcMaxWidth(Graphics g){
             // Determine the required width of the class box based on the longest text
             int maxTextWidth = g.getFontMetrics().stringWidth(name); // Start with the name width
@@ -1068,15 +1222,30 @@ public class ClassDiagramUI extends JFrame {
             maxWidth=max;
             return max;
         }
+        /**
+         * Calculates the maximum height required for the UML component based on its attributes and methods.
+         * @param g the Graphics object used to calculate height.
+         * @return the maximum height required for the component.
+         */
         public int calcMaxHeight(Graphics g){
             int max=50 + attributes.size() * 15 + methods.size() * 15;
             maxHeight=max;
             return max;
         }
+        /**
+         * Adds an attribute to the UML component and updates it in the respective class.
+         * @param attribute the attribute to add to the UML component.
+         */
         public void addAttribute(String attribute) {
             attributes.add(attribute);
             classes.get(id).addAttribute(attribute);
         }
+        /**
+         * Checks if the point is within an attribute or method section of the UML component.
+         * @param point the point to check.
+         * @param type the type of section to check ("attribute" or "method").
+         * @return true if the point is inside the attribute or method section, false otherwise.
+         */
         public boolean containsAttributeOrMethod(Point point, String type) {
 
 
@@ -1105,12 +1274,17 @@ public class ClassDiagramUI extends JFrame {
             }
             return false;
         }
-
+        /**
+         * Adds a method to the UML component and updates it in the respective class.
+         * @param method the method to add to the UML component.
+         */
         public void addMethod(String method) {
             methods.add(method);
             classes.get(id).addMethod(method);
         }
-
+        /**
+         * Makes the UML component an interface by adding the appropriate prefix to the name.
+         */
         public void makeInterface() {
             if (!name.startsWith("<<interface>> ")) { // Prevent duplicate prefix
                 name = "<<interface>> " + name;
@@ -1118,14 +1292,21 @@ public class ClassDiagramUI extends JFrame {
             classes.get(id).setName(name);
             classes.get(id).setState("Interface");
         }
-
+        /**
+         * Makes the UML component abstract by setting the appropriate flags and updating its state.
+         */
         public void makeAbstract() {
             name = name; // Keep the name unchanged
             classes.get(id).setName(name);
             isAbstract = true; // Use a flag to indicate the abstract state
             classes.get(id).setState("Abstract");
         }
-
+        /**
+         * Sets the comment text for the UML component, throwing exceptions if invalid input is provided.
+         * @param newContent the new comment text.
+         * @throws UnsupportedOperationException if the component type is not "Comment".
+         * @throws IllegalArgumentException if the comment text is null or empty.
+         */
         public void setCommentText(String newContent) {
             if (!"Comment".equals(type)) {
                 throw new UnsupportedOperationException("setCommentText can only be used for 'Comment' type components.");
@@ -1136,7 +1317,10 @@ public class ClassDiagramUI extends JFrame {
             this.text = newContent;
             System.out.println("Comment updated to: " + this.text);
         }
-
+        /**
+         * Draws the UML component on the provided Graphics object, handling different types of components.
+         * @param g the Graphics object used to draw the component.
+         */
         public void draw(Graphics g)//, boolean drawPartition) {
         {
             int x = 0, y = 0;
@@ -1248,7 +1432,10 @@ public class ClassDiagramUI extends JFrame {
                 repaint();
             }
         }
-
+        /**
+         * Sets the flag to indicate that the component should draw a partition.
+         * @param val the value indicating whether a partition should be drawn.
+         */
         public void setDrawPartition(boolean val) {
             drawPartition = true;
             repaint();

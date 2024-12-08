@@ -5,11 +5,21 @@
 package business;
 
 /**
+ * Represents a Use Case Diagram in a UML diagramming application.
+ * This class implements the Diagram interface, providing
+ * functionality for displaying the diagram.
+ *
+ * <p>Currently, the methods in this class are placeholders, and their implementations
+ * need to be added.</p>
  *
  * @author hp
  */
-// UsecaseDiagram Class implementing Diagram
 public class UseCaseDiagram implements Diagram {
+
+    /**
+     * Displays the use case diagram.
+     * <p>Note: Implementation to be added.</p>
+     */
     @Override
     public void display() {
         // Implementation to be added
