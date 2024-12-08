@@ -1140,20 +1140,18 @@ public class ClassDiagramUI extends JFrame {
                     Font originalFont = g.getFont();
                     if (isAbstract) {
                         g.setFont(originalFont.deriveFont(Font.ITALIC));
-
+                        g.drawString(name, x + 10, y + 15);
+                        g.setFont(originalFont.deriveFont(Font.PLAIN));
                     }
+                    else
+                        g.drawString(name, x + 10, y + 15);
                     // Reset font after drawing the name
                     g.setFont(originalFont);
-                    //g.drawString(name, x + 10, y + 15);
                     // Draw the attributes section
                     if (!attributes.isEmpty()) {
                         g.drawLine(x, y + 30 + attributes.size() * 15, x + boxWidth, y + 30 + attributes.size() * 15);
                         int attrY = y + 35;
                         for (String attribute : attributes) {
-                            // If abstract, set font to italic
-                            if (isAbstract) {
-                                g.setFont(originalFont.deriveFont(Font.ITALIC));
-                            }
                             g.drawString(attribute, x + 5, attrY);
                             attrY += 15;
                         }
@@ -1218,7 +1216,7 @@ public class ClassDiagramUI extends JFrame {
                     g.drawString(this.text,x+10,y+25);
                     break;
             }
-            if (position != null)
+            if (position != null && type=="Comment")
                 g.drawString(name, x + 10, y + 15);
             if (drawPartition) {
                 noOfPartitions++;
