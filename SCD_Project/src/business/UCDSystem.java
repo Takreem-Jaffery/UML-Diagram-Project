@@ -4,8 +4,16 @@
  */
 package business;
 
+import business.Component;
 import java.awt.Point;
 
+/**
+ * UCD System represents the System Component of a Use Case Diagram.
+ * This class implements the {@link Component} interface
+ * and provides properties such as the name, position, wdith and height of the system.
+ * It also includes methods for displaying the use case and managing its properties and constraints.
+ *
+ */
 public class UCDSystem implements Component {
     /**
      * Name of the system.
