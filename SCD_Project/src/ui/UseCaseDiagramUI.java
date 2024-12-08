@@ -17,34 +17,71 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
+/**
+ * The {@code UseCaseDiagramUI} class represents the user interface for designing UML Use Case Diagrams.
+ * It provides tools for adding use cases, actors, arrows, and systems, as well as features for saving,
+ * loading, and exporting projects and diagrams.
+ *
+ * This UI includes functionality for:
+ * <ul>
+ *     <li>Saving and loading UML diagrams</li>
+ *     <li>Exporting diagrams as images (JPEG/PNG)</li>
+ *     <li>Switching to a Class Diagram UI</li>
+ * </ul>
+ *
+ * The class is built using Swing components and integrates with the business layer for project operations.
+ */
 public class UseCaseDiagramUI extends JFrame {
+    /** Panel displaying the title of the application. */
     JPanel pageTitlePanel;
+/** Top panel containing title and buttons for saving and loading. */
     JPanel topPanel;
+    /** Panel for displaying and editing diagram notes. */
     JPanel diagramNotesPanel;
+    /** Bottom panel (reserved for additional UI components). */
     JPanel bottomPanel;
+    /** The canvas for drawing the UML Use Case Diagram. */
     UMLCanvas canvas;
+    /** Panel displaying sample components for the UML diagram. */
     SamplesPanel samplesPanel;
+    /** Scrollable container for the UML canvas. */
     JScrollPane canvasScrollPanel;
+    /** Right-side panel containing sample components and mouse coordinates. */
     JPanel rightPanel;
-
+    /** Text area for entering diagram notes. */
     JTextArea diagramNotes;
+    /** List of use cases in the diagram. */
     ArrayList<business.Usecase> usecases;
+    /** List of actors in the diagram. */
     ArrayList<business.Actor> actors;
+    /** List of arrows connecting use cases and actors. */
     ArrayList<UseCaseArrow> arrows;
+    /** List of systems in the diagram. */
     ArrayList<UCDSystem> systems;
+    /** The current project being worked on. */
     Project project;
-
+    /** Button for saving the diagram as an image. */
     JButton saveImage;
+    /** Button for saving the project. */
     JButton saveProject;
+    /** Button for loading an existing project. */
     JButton loadProject;
+    /** Button for switching to the Class Diagram UI. */
     JButton toCDButton;
+    /** Panel containing buttons for file operations. */
     JPanel topButtonPanel;
+    /** Panel containing navigation buttons. */
     JPanel topRightButtonPanel;
+    /** Label displaying the current mouse coordinates on the canvas. */
     JLabel mouseCoords;
+    /** Panel containing the mouse coordinates label. */
     JPanel bottomCoords;
 
 
+    /**
+     * Constructs the {@code UseCaseDiagramUI} and initializes the user interface components.
+     * Sets up action listeners for various operations such as saving, loading, and exporting diagrams.
+     */
     public UseCaseDiagramUI() {
 
         //business layer objects
@@ -268,69 +305,6 @@ public class UseCaseDiagramUI extends JFrame {
                 revalidate();
             }
         });
-        //Abandon textArea implementation...
-
-//        String[] previousText = {""};
-//        final String[] currentText = {diagramNotes.getText()};
-//        diagramNotes.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                    currentText[0] = diagramNotes.getText();
-//                    //get the new text after enter was pressed
-//                    String newText;
-//                    if (previousText[0].isEmpty()) {
-//                        newText = currentText[0].substring(previousText[0].length());
-//                    } else {
-//                        //UCDSystem.out.println("In here");
-//                        newText = currentText[0].substring(previousText[0].length() + 1);
-//                    }
-//                    UCDSystem.out.println("New text entered: " + newText);
-//                    if (newText.equals("--")) {
-//                        classDrawPartition();
-//                    }
-//                    // Update previousText to currentText
-//                    previousText[0] = currentText[0];
-//                }
-//            }
-//        });
-//        diagramNotes.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                SwingUtilities.invokeLater(() -> {
-//                    try {
-//                        String currentText = diagramNotes.getText();
-//
-//                        // Iterate through all lines in the text area
-//                        String[] lines = currentText.split("\n");
-//                        ArrayList<String> lineList = new ArrayList<>(java.util.Arrays.asList(lines));
-//
-//                        // Iterate through canvas components to adjust partitions
-//                        // Count current number of `--` lines associated with this component
-//                        int currentPartitions = 0;
-//                        for (String line : lineList) {
-//                            if (line.trim().equals("--")) {
-//                                currentPartitions++;
-//                            }
-//                        }
-//                        classRemovePartition(currentPartitions);
-//
-//                    } catch (Exception ex) {
-//                        ex.printStackTrace();
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//
-//            }
-//        });
 
         // Configure main frame layout
         this.setLayout(new BorderLayout());
@@ -369,6 +343,13 @@ public class UseCaseDiagramUI extends JFrame {
     }
 
     //used to save image in project class
+    /**
+     * Exports the UML diagram as a buffered image with the specified dimensions.
+     *
+     * @param width  the width of the image.
+     * @param height the height of the image.
+     * @return a {@code BufferedImage} containing the UML diagram.
+     */
     public BufferedImage exportToBufferedImage(float width, float height) {
         // Create a buffered image of the diagram's exact size
         BufferedImage image = new BufferedImage((int) width, (int) height,
@@ -391,26 +372,62 @@ public class UseCaseDiagramUI extends JFrame {
 
         return image;
     }
+    /**
+     * Inner class for handling project-saving operations.
+     */
     private class SaveProjectActionListener implements ActionListener {
+        /**
+         * Handles the save project action when triggered by the user.
+         *
+         * @param e the event triggered by the save project button.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
             project.saveUCDProject(usecases,actors,arrows,systems,UseCaseDiagramUI.this);
         }
     }
-
+    /**
+     * The {@code UMLCanvas} class represents a custom JPanel for drawing and interacting
+     * with UML components such as Use Cases, Actors, Systems, and connecting lines (arrows).
+     * This canvas supports the creation, dragging, resizing, renaming, and deletion of components.
+     */
     //Canvas to display draggable, editable, and deletable components
     public class UMLCanvas extends JPanel {
-        private ArrayList<UMLComponent> components;
-        private UMLComponent selectedComponent;
-        private boolean resizing;
-        private final int maxWidth = 2000;
-        private final int maxHeight = 2000;
 
+        /**
+         * List of all UML components displayed on the canvas.
+         */
+        private ArrayList<UMLComponent> components;
+        /**
+         * The currently selected component for interaction.
+         */
+        private UMLComponent selectedComponent;
+        /**
+         * Flag indicating whether the selected component is being resized.
+         */
+        private boolean resizing;
+        /**
+         * Maximum width of the canvas.
+         */
+        private final int maxWidth = 2000;
+        /**
+         * Maximum height of the canvas.
+         */
+        private final int maxHeight = 2000;
+        /**
+         * Returns the preferred size of the canvas.
+         *
+         * @return a {@code Dimension} object representing the preferred size.
+         */
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(maxWidth, maxHeight);
         }
+        /**
+         * Constructs a new {@code UMLCanvas}, initializing mouse listeners
+         * to handle component interactions.
+         */
         public UMLCanvas() {
             components = new ArrayList<>();
             selectedComponent = null;
@@ -418,6 +435,11 @@ public class UseCaseDiagramUI extends JFrame {
 
             // Add mouse listeners for interaction
             this.addMouseListener(new MouseAdapter() {
+                /**
+                 * Handles mouse press events to select components or initiate resizing.
+                 *
+                 * @param e the {@code MouseEvent} object containing mouse details.
+                 */
                 @Override
                 public void mousePressed(MouseEvent e) {
                     selectComponentAt(e.getPoint());
@@ -428,11 +450,15 @@ public class UseCaseDiagramUI extends JFrame {
                         resizing = true;
                     }
                 }
-
+                /**
+                 * Handles mouse press events to select components or initiate resizing.
+                 *
+                 * @param e the {@code MouseEvent} object containing mouse details.
+                 */
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     resizing = false;
-                    selectedComponent=null;
+                    //selectedComponent=null;
                     if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
                         int response = JOptionPane.showConfirmDialog(
                                 UMLCanvas.this,
@@ -455,7 +481,11 @@ public class UseCaseDiagramUI extends JFrame {
                         }
                     }
                 }
-
+                /**
+                 * Handles mouse click events to rename components or update notes.
+                 *
+                 * @param e the {@code MouseEvent} object containing mouse details.
+                 */
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (selectedComponent != null && e.getClickCount() == 2) {
@@ -477,6 +507,11 @@ public class UseCaseDiagramUI extends JFrame {
             });
 
             this.addMouseMotionListener(new MouseMotionAdapter() {
+                /**
+                 * Handles mouse drag events to move or resize components.
+                 *
+                 * @param e the {@code MouseEvent} object containing mouse details.
+                 */
                 @Override
                 public void mouseDragged(MouseEvent e) {
                     if (selectedComponent != null) {
@@ -494,6 +529,11 @@ public class UseCaseDiagramUI extends JFrame {
             });
         }
 
+        /**
+         * Creates a new UML component of the specified type and adds it to the canvas.
+         *
+         * @param type the type of the component (e.g., "Usecase", "Actor", "System").
+         */
         // Create a new component at a default position
         public void createNewComponent(String type) {
             if (type == "Usecase" || type == "Actor" || type=="System") {
@@ -532,6 +572,12 @@ public class UseCaseDiagramUI extends JFrame {
         }
 
         // Select a component at a specific point
+
+        /**
+         * Selects a component at the specified point, if any exists.
+         *
+         * @param point the point to check for a component.
+         */
         private void selectComponentAt(Point point) {
             for (UMLComponent component : components) {
                 if ((Objects.equals(component.type, "Usecase") || Objects.equals(component.type, "Actor") || Objects.equals(component.type, "System")) && component.contains(point)) {
@@ -545,14 +591,11 @@ public class UseCaseDiagramUI extends JFrame {
             }
             selectedComponent = null;
         }
-
-//        @Override
-//        protected void paintComponent(Graphics g) {
-//            super.paintComponent(g);
-//            for (UMLComponent component : components) {
-//                component.draw(g);
-//            }
-//        }
+        /**
+         * Paints the canvas and its components, including a grid background.
+         *
+         * @param g the {@code Graphics} object used for drawing.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -583,11 +626,23 @@ public class UseCaseDiagramUI extends JFrame {
             }
         }
     }
-
+    /**
+     * The {@code SamplesPanel} class represents a side panel that displays static UML samples
+     * (e.g., Use Case, Actor, System, etc.) and allows users to create these components
+     * on a linked {@link UMLCanvas} by clicking on the samples.
+     */
     // Panel to display static samples
     public class SamplesPanel extends JPanel {
+        /**
+         * The {@link UMLCanvas} instance linked to this panel, where components are created.
+         */
         private UMLCanvas canvas;
-
+        /**
+         * Constructs a {@code SamplesPanel} with the specified {@link UMLCanvas}.
+         * Sets up mouse listeners to detect clicks on the samples and add components to the canvas.
+         *
+         * @param canvas the UML canvas linked to this panel
+         */
         public SamplesPanel(UMLCanvas canvas) {
             this.canvas = canvas;
             this.setPreferredSize(new Dimension(150, 0));
@@ -595,6 +650,12 @@ public class UseCaseDiagramUI extends JFrame {
 
             // Add mouse listener to detect clicks on samples
             this.addMouseListener(new MouseAdapter() {
+                /**
+                 * Detects mouse presses and creates a new UML component on the canvas
+                 * if a sample is clicked.
+                 *
+                 * @param e the {@code MouseEvent} object containing mouse details
+                 */
                 @Override
                 public void mousePressed(MouseEvent e) {
                     String type = detectSampleClick(e.getPoint());
@@ -604,7 +665,12 @@ public class UseCaseDiagramUI extends JFrame {
                 }
             });
         }
-
+        /**
+         * Detects which sample is clicked based on the point coordinates.
+         *
+         * @param point the point where the mouse was clicked
+         * @return the type of the clicked sample, or {@code null} if no sample is clicked
+         */
         // Detect which sample is clicked
         private String detectSampleClick(Point point) {
             int y = point.y;
@@ -616,13 +682,21 @@ public class UseCaseDiagramUI extends JFrame {
             else if (y < 380) return "System";
             return null;
         }
-
+        /**
+         * Paints the panel and draws the static UML samples.
+         *
+         * @param g the {@code Graphics} object used for painting
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             drawSamples(g);
         }
-
+        /**
+         * Draws static UML samples (Use Case, Actor, System, etc.) on the panel.
+         *
+         * @param g the {@code Graphics} object used for drawing
+         */
         // Draw static samples
         private void drawSamples(Graphics g) {
             int x = 20, y = 10;
@@ -647,9 +721,6 @@ public class UseCaseDiagramUI extends JFrame {
             fm = g.getFontMetrics();
             textWidth = fm.stringWidth("Actor");
             g.drawString("Actor", x - textWidth / 2, y + 110);
-//
-//            g.drawLine(x, y + 25, x + 100, y + 25);
-//            g.drawString("Association", x + 35, y + 10);
 
             //Arrow
             x -= 50;
@@ -691,16 +762,54 @@ public class UseCaseDiagramUI extends JFrame {
         }
     }
     //UML Component class
+    /**
+     * The {@code UMLComponent} class represents a component in a UML diagram.
+     * It can represent various UML elements, such as Use Case, Actor, Arrow, Include, Extend, or System.
+     * This class provides functionalities to manage the position, size, and drawing of the component.
+     */
     public class UMLComponent {
+        /**
+         * * The type of UML component (e.g., "Usecase", "Actor", "Arrow", "Include", "Extend", "System").
+         */
         private String type;
-        private Point position;
-        private String name;
-        private Point start;
-        private Point end;
-        public int id;
-        private int width;
-        private int height;
 
+        /**
+         * The position of the UML component on the canvas.
+         */
+
+        private Point position;
+        /**
+         * The name or label of the UML component.
+         */
+        private String name;
+        /**
+         * The start point of a line-based UML component (e.g., Arrow, Include, Extend).
+         */
+        private Point start;
+
+        /**
+         * The end point of a line-based UML component (e.g., Arrow, Include, Extend).
+         */
+        private Point end;
+        /**
+         * The unique identifier of the UML component.
+         */
+        public int id;
+        /**
+         * The width of the component (used for "System").
+         */
+        private int width;
+        /**
+         * The height of the component (used for "System").
+         */
+        private int height;
+        /**
+         * Constructs a UML component with a type and a position.
+         * This constructor is used for components like Usecase, Actor, and System.
+         *
+         * @param type     the type of the UML component
+         * @param position the position of the component on the canvas
+         */
         public UMLComponent(String type, Point position) {
             this.type = type;
             this.position = position;
@@ -710,7 +819,14 @@ public class UseCaseDiagramUI extends JFrame {
             this.width = 150; // Default width for UCDSystem
             this.height = 100; // Default height for UCDSystem
         }
-
+        /**
+         * Constructs a UML component with a type, start point, and end point.
+         * This constructor is used for components like Arrow, Include, and Extend.
+         *
+         * @param type  the type of the UML component
+         * @param start the start point of the component
+         * @param end   the end point of the component
+         */
         public UMLComponent(String type, Point start, Point end) {
             this.type = type;
             this.start = start;
@@ -718,7 +834,12 @@ public class UseCaseDiagramUI extends JFrame {
             this.name = type;
             this.position = null;
         }
-
+        /**
+         * Moves the UML component to a new position on the canvas.
+         * The movement logic depends on the type of the component.
+         *
+         * @param newPoint the new position
+         */
         public void move(Point newPoint) {
             if(type=="Usecase")
                 position = new Point(newPoint.x - 50, newPoint.y - 25); // Center the drag
@@ -734,7 +855,11 @@ public class UseCaseDiagramUI extends JFrame {
             else if(type=="System")
                 systems.get(id).setPosition(position);
         }
-
+        /**
+         * Moves a line-based UML component by translating its start and end points.
+         *
+         * @param newPoint the new position to move the line
+         */
         public void moveLine(Point newPoint) {
             int dx = newPoint.x - start.x;
             int dy = newPoint.y - start.y;
@@ -743,11 +868,16 @@ public class UseCaseDiagramUI extends JFrame {
             arrows.get(id).setStartPoint(start);
             arrows.get(id).setEndPoint(end);
         }
-
+        /**
+         * Checks if a given point is within the bounds of the UML component.
+         *
+         * @param point the point to check
+         * @return {@code true} if the point is within the component, otherwise {@code false}
+         */
         public boolean contains(Point point) {
             if(type=="Usecase")
                 return point.x >= position.x && point.x <= position.x + 100
-                    && point.y >= position.y && point.y <= position.y + 50;
+                        && point.y >= position.y && point.y <= position.y + 50;
             else if (type.equals("System"))
                 return point.x >= position.x && point.x <= position.x + width
                         && point.y >= position.y && point.y <= position.y + height;
@@ -755,12 +885,23 @@ public class UseCaseDiagramUI extends JFrame {
                 return point.x >= position.x-20 && point.x <= position.x + 20
                         && point.y >= position.y && point.y <= position.y + 110;
         }
-
+        /**
+         * Checks if a given point is within the bounds of a line-based UML component.
+         *
+         * @param point the point to check
+         * @return {@code true} if the point is near the start or end points, otherwise {@code false}
+         */
         public boolean containsLine(Point point) {
             return new Rectangle(start.x - 5, start.y - 5, 10, 10).contains(point) ||
                     new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
         }
-
+        /**
+         * Checks if a given point is within the resize handle of the UML component.
+         * The resize handle is typically located at the bottom-right corner of components like "System".
+         *
+         * @param point the point to check
+         * @return {@code true} if the point is within the resize handle, otherwise {@code false}
+         */
         public boolean isInResizeHandle(Point point) {
             if (type.equals("System")) {
                 //bottom-right corner is the resize handle (10x10 px area)
@@ -771,6 +912,12 @@ public class UseCaseDiagramUI extends JFrame {
             return new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
         }
 
+        /**
+         * Resizes the UML component based on the given point.
+         * Resizing is only applicable for certain types like "System".
+         *
+         * @param point the point to determine the new size
+         */
         public void resize(Point point) {
             if(type=="System"){
                 width = Math.max(50, point.x - position.x); // Minimum width = 50
@@ -784,7 +931,11 @@ public class UseCaseDiagramUI extends JFrame {
                 a.setEndPoint(end);
             }
         }
-
+        /**
+         * Sets the name or label of the UML component.
+         *
+         * @param name the new name of the component
+         */
         public void setName(String name) {
             this.name = name;
             if(type=="Usecase") {
@@ -799,7 +950,12 @@ public class UseCaseDiagramUI extends JFrame {
                 a.setName(name);
             }
         }
-
+        /**
+         * Draws the UML component on the canvas.
+         * The drawing logic is specific to the type of component.
+         *
+         * @param g the {@code Graphics} object used for drawing
+         */
         public void draw(Graphics g)//, boolean drawPartition) {
         {
             int x = 0, y = 0;
@@ -815,59 +971,68 @@ public class UseCaseDiagramUI extends JFrame {
             if(type=="Arrow"||type=="Include"||type=="Extend") {
                 g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
             }switch (type) {
-                case "Usecase":
-                    g2d.setStroke(new BasicStroke());
-                    g.drawOval(x, y, 100, 50);
-                    g.drawString(name, x+20, y+30);
-                    break;
-                case "Actor":
-                    g2d.setStroke(new BasicStroke());
-                    g.drawOval(x - 15, y, 30, 30);  // Head
-                    g.drawLine(x, y+30, x, y+60);   // Body
-                    g.drawLine(x - 20, y+45, x + 20, y+45);  // Arms
-                    g.drawLine(x, y+60, x - 20, y+90);  // Left leg
-                    g.drawLine(x, y+60, x + 20, y+90);  // Right leg
-                    g.drawString(name, x - textWidth / 2, y+110);
-                    break;
-                case "Arrow":
-                    g.drawLine(start.x, start.y, end.x, end.y);
-                    g2d.setStroke(new BasicStroke());
-                    drawArrowHead(g,start,end);
-                    break;
-                case "Include":
-                    g.drawLine(start.x, start.y, end.x, end.y);
-                    g2d.setStroke(new BasicStroke());
-                    drawArrowHead(g,start,end);
-                    fm = g2d.getFontMetrics();
-                    textWidth = fm.stringWidth("include");
-                    g.drawString("<<include>>", (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
-                    break;
-                case "Extend":
-                    g.drawLine(start.x, start.y, end.x, end.y);
-                    g2d.setStroke(new BasicStroke());
-                    drawArrowHead(g,start,end);
+            case "Usecase":
+                g2d.setStroke(new BasicStroke());
+                int padding = 20; // Extra space around the text
+                int ovalWidth = textWidth + padding; // Adjust oval width
+                int ovalHeight = textHeight + padding; // Adjust oval height
+                g.drawOval(x, y, ovalWidth, ovalHeight);
+                g.drawString(name, x + (ovalWidth - textWidth) / 2, y + (ovalHeight + textHeight / 2) / 2);
+                break;
+            case "Actor":
+                g2d.setStroke(new BasicStroke());
+                g.drawOval(x - 15, y, 30, 30);  // Head
+                g.drawLine(x, y+30, x, y+60);   // Body
+                g.drawLine(x - 20, y+45, x + 20, y+45);  // Arms
+                g.drawLine(x, y+60, x - 20, y+90);  // Left leg
+                g.drawLine(x, y+60, x + 20, y+90);  // Right leg
+                g.drawString(name, x - textWidth / 2, y+110);
+                break;
+            case "Arrow":
+                g.drawLine(start.x, start.y, end.x, end.y);
+                g2d.setStroke(new BasicStroke());
+                drawArrowHead(g,start,end);
+                break;
+            case "Include":
+                g.drawLine(start.x, start.y, end.x, end.y);
+                g2d.setStroke(new BasicStroke());
+                drawArrowHead(g,start,end);
+                fm = g2d.getFontMetrics();
+                textWidth = fm.stringWidth("include");
+                g.drawString("<<include>>", (start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
+                break;
+            case "Extend":
+                g.drawLine(start.x, start.y, end.x, end.y);
+                g2d.setStroke(new BasicStroke());
+                drawArrowHead(g,start,end);
 
-                    fm = g2d.getFontMetrics();
-                    textWidth = fm.stringWidth("extend");
-                    g.drawString("<<extend>>",(start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
-                    break;
-                case "System":
-                    g2d.setStroke(new BasicStroke(1));
-                    g.drawRect(x, y, width, height); // Draw system rectangle
+                fm = g2d.getFontMetrics();
+                textWidth = fm.stringWidth("extend");
+                g.drawString("<<extend>>",(start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
+                break;
+            case "System":
+                g2d.setStroke(new BasicStroke(1));
+                g.drawRect(x, y, width, height); // Draw system rectangle
 
-                    // Calculate top-center position for the name
-                    int textX = x + (width - textWidth) / 2; // Horizontally center the text
-                    int textY = y + textHeight;              // Place text just below the top border
+                // Calculate top-center position for the name
+                int textX = x + (width - textWidth) / 2; // Horizontally center the text
+                int textY = y + textHeight;              // Place text just below the top border
 
-                    g.drawString(name, textX, textY); // Draw the name at the top-center
+                g.drawString(name, textX, textY); // Draw the name at the top-center
 
-                    // Draw resize handle at the bottom-right corner
-                    g.fillRect(x + width - 10, y + height - 10, 10, 10);
-                    break;
-            }
-
+                // Draw resize handle at the bottom-right corner
+                g.fillRect(x + width - 10, y + height - 10, 10, 10);
+                break;
         }
 
+        }
+        /**
+         * Draws the arrowhead for a line-based UML component (e.g., Arrow, Include, Extend).
+         *
+         * @param g     the {@code Graphics} object used for drawing
+         * @param start the start point of the line
+         * @param end   the end point of the line
+         */
         private void drawArrowHead(Graphics g, Point start, Point end) {
             int dx = end.x - start.x;
             int dy = end.y - start.y;

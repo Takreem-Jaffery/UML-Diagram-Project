@@ -1,6 +1,6 @@
-package Test;
+package Tests;
 
-import business.Actor;
+import gibusiness.Actor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

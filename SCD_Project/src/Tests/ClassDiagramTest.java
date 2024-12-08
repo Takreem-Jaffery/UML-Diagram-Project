@@ -1,4 +1,4 @@
-package Test;
+package Tests;
 
 import business.ClassDiagram;
 import org.junit.jupiter.api.Assertions;
