@@ -8,124 +8,117 @@ import java.awt.*;  // Import Java's AWT Point class to use Point objects in tes
 
 import static org.junit.jupiter.api.Assertions.assertNull;  // Import assertion method to check for null values
 
-// Test class for the 'Comment' class in the business package
+/**
+ * Test class for the 'Comment' class in the business package.
+ * This class verifies the behavior of constructors, getters, setters, and additional methods.
+ */
 class CommentTest {
 
-    // Test the default constructor of the 'Comment' class
+    /**
+     * Test the default constructor of the 'Comment' class.
+     */
     @Test
     void testDefaultConstructor() {
-        // Create an instance of Comment using the default constructor
         Comment comment = new Comment();
 
-        // Verify the default comment text is an empty string
-        Assertions.assertEquals("", comment.getCommentText());
+        // Verify default comment text
+        Assertions.assertEquals("", comment.getCommentText(), "Default comment text should be an empty string.");
 
-        // Verify the default position is null
-        assertNull(comment.getPosition());
+        // Verify default position
+        assertNull(comment.getPosition(), "Default position should be null.");
     }
 
-    // Test the parameterized constructor of the 'Comment' class
+    /**
+     * Test the parameterized constructor of the 'Comment' class.
+     */
     @Test
     void testParameterizedConstructor() {
-        // Create a point to represent the position of the comment
         Point position = new Point(50, 50);
-
-        // Create an instance of Comment using the parameterized constructor
         Comment comment = new Comment("This is a comment", position);
 
-        // Verify that the comment text is set correctly
-        Assertions.assertEquals("This is a comment", comment.getCommentText());
+        // Verify comment text
+        Assertions.assertEquals("This is a comment", comment.getCommentText(), "Comment text should match the provided value.");
 
-        // Verify that the position is set correctly
-        Assertions.assertEquals(position, comment.getPosition());
+        // Verify position
+        Assertions.assertEquals(position, comment.getPosition(), "Position should match the provided Point object.");
     }
 
-    // Test the getter and setter for 'commentText'
+    /**
+     * Test the getter and setter for 'commentText'.
+     */
     @Test
     void testGetAndSetCommentText() {
-        // Create a new Comment instance
         Comment comment = new Comment();
 
-        // Set the comment text
+        // Set and verify comment text
         comment.setCommentText("New comment text");
-
-        // Verify that the comment text has been set correctly
-        Assertions.assertEquals("New comment text", comment.getCommentText());
+        Assertions.assertEquals("New comment text", comment.getCommentText(), "Setter should correctly update the comment text.");
     }
 
-    // Test the getter and setter for 'position'
+    /**
+     * Test the getter and setter for 'position'.
+     */
     @Test
     void testGetAndSetPosition() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Create a new position point
         Point newPosition = new Point(100, 200);
 
-        // Set the position for the comment
+        // Set and verify position
         comment.setPosition(newPosition);
-
-        // Verify that the position has been set correctly
-        Assertions.assertEquals(newPosition, comment.getPosition());
+        Assertions.assertEquals(newPosition, comment.getPosition(), "Setter should correctly update the position.");
     }
 
-    // Test the method 'getClassType' to verify it returns the correct class type
+    /**
+     * Test the 'getClassType' method to verify it returns the correct class type.
+     */
     @Test
     void testGetClassType() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Verify that the class type is 'Comment'
-        Assertions.assertEquals("Comment", comment.getClassType());
+        Assertions.assertEquals("Comment", comment.getClassType(), "getClassType should return 'Comment'.");
     }
 
-    // Test the 'display' method of the Comment class
+    /**
+     * Test the 'display' method to ensure it runs without throwing exceptions.
+     */
     @Test
     void testDisplay() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Verify that calling 'display' does not throw any exceptions
-        Assertions.assertDoesNotThrow(comment::display);
+        Assertions.assertDoesNotThrow(comment::display, "display method should not throw any exceptions.");
     }
 
-    // Test the 'addProperty' method of the Comment class
+    /**
+     * Test the 'addProperty' method to ensure it runs without throwing exceptions.
+     */
     @Test
     void testAddProperty() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Verify that calling 'addProperty' does not throw any exceptions
-        Assertions.assertDoesNotThrow(comment::addProperty);
+        Assertions.assertDoesNotThrow(comment::addProperty, "addProperty method should not throw any exceptions.");
     }
 
-    // Test the 'removeProperty' method of the Comment class
+    /**
+     * Test the 'removeProperty' method to ensure it runs without throwing exceptions.
+     */
     @Test
     void testRemoveProperty() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Verify that calling 'removeProperty' does not throw any exceptions
-        Assertions.assertDoesNotThrow(comment::removeProperty);
+        Assertions.assertDoesNotThrow(comment::removeProperty, "removeProperty method should not throw any exceptions.");
     }
 
-    // Test the 'addConstraint' method of the Comment class
+    /**
+     * Test the 'addConstraint' method to ensure it runs without throwing exceptions.
+     */
     @Test
     void testAddConstraint() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Verify that calling 'addConstraint' does not throw any exceptions
-        Assertions.assertDoesNotThrow(comment::addConstraint);
+        Assertions.assertDoesNotThrow(comment::addConstraint, "addConstraint method should not throw any exceptions.");
     }
 
-    // Test the 'removeConstraint' method of the Comment class
+    /**
+     * Test the 'removeConstraint' method to ensure it runs without throwing exceptions.
+     */
     @Test
     void testRemoveConstraint() {
-        // Create a new Comment instance
         Comment comment = new Comment();
-
-        // Verify that calling 'removeConstraint' does not throw any exceptions
-        Assertions.assertDoesNotThrow(comment::removeConstraint);
+        Assertions.assertDoesNotThrow(comment::removeConstraint, "removeConstraint method should not throw any exceptions.");
     }
 }

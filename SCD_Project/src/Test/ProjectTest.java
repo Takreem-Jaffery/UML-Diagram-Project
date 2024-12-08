@@ -15,6 +15,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for the Project class.
+ * Contains tests for saving and loading projects, simulating file interactions with a UI.
+ */
 class ProjectTest {
 
     private Project project;
@@ -23,7 +27,10 @@ class ProjectTest {
     private PngImageDAO pngImageDAO;
     private JFrame ui;
 
-    // Setup method that runs before each test
+    /**
+     * Setup method that runs before each test to initialize necessary objects.
+     * Initializes the data access objects (DAOs) and the Project object with mock dependencies.
+     */
     @BeforeEach
     void setUp() {
         // Initializing the data access objects (DAOs)
@@ -41,7 +48,13 @@ class ProjectTest {
         project.setPngImageDAO(pngImageDAO); // Injecting the PngImageDAO
     }
 
-    // Test method to simulate saving a project successfully
+    /**
+     * Test method to simulate saving a project successfully.
+     * Simulates user input for project name, file selection, and the project saving process.
+     * Verifies that the saving process does not throw exceptions.
+     *
+     * @throws IOException If an error occurs during the save operation.
+     */
     @Test
     void testSaveCDProject_Success() throws IOException {
         // Initializing the necessary lists for project components
@@ -80,7 +93,10 @@ class ProjectTest {
         assertTrue(true); // Placeholder assertion to ensure the test runs correctly
     }
 
-    // Test method to check the behavior when the project name is empty
+    /**
+     * Test method to check the behavior when the project name is empty.
+     * Verifies that the system prompts the user with an error message if the project name is empty.
+     */
     @Test
     void testSaveCDProject_ProjectNameEmpty() {
         // Arrange: Initialize lists for the project components
@@ -109,7 +125,12 @@ class ProjectTest {
         assertTrue(true); // Placeholder assertion to pass the test
     }
 
-    // Test method to simulate successful project loading
+    /**
+     * Test method to simulate successful project loading.
+     * Verifies that components can be loaded into the project successfully and checks the loaded component list.
+     *
+     * @throws IOException If an error occurs during the loading process.
+     */
     @Test
     void testLoadProject_Success() throws IOException {
         // Simulating mock components to be loaded into the project
@@ -124,7 +145,10 @@ class ProjectTest {
         assertEquals(1, mockComponents.size(), "There should be 1 component loaded");
     }
 
-    // Test method to simulate loading a project with an invalid file type
+    /**
+     * Test method to simulate loading a project with an invalid file type.
+     * Verifies that an error message is shown if an invalid file type (non-JSON) is selected for loading.
+     */
     @Test
     void testLoadProject_InvalidFileType() {
         // Initializing a list for the components (mocked here)

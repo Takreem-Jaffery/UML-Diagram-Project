@@ -8,8 +8,17 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for the UseCaseArrow class.
+ * This class contains tests to verify the functionality of the UseCaseArrow object,
+ * including its properties (name, type, start and end points) and their update functionality.
+ */
 class UseCaseArrowTest {
 
+    /**
+     * Test method for verifying the functionality of the UseCaseArrow class.
+     * It checks the initialization of the arrow's properties, updates them, and validates the changes.
+     */
     @Test
     void testUseCaseArrow() {
 

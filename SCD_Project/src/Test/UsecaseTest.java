@@ -8,8 +8,17 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for the Usecase class.
+ * This class contains tests to verify the functionality of the Usecase class,
+ * including checking the name, position, and diagram notes.
+ */
 class UsecaseTest {
 
+    /**
+     * Test method for verifying the functionality of the Usecase class.
+     * This method tests the creation, updating, and validation of a Usecase object.
+     */
     @Test
     void testUsecase() {
 
@@ -26,13 +35,8 @@ class UsecaseTest {
         String diagramNotes = usecase.getDiagramNotes();
 
         // Step 4: Assert that the initial values match the expected values
-        // Check if the name is correctly set
         assertEquals(initialName, name, "The name should be the same as the initial name.");
-
-        // Check if the position is correctly set
         assertEquals(initialPosition, position, "The position should be the same as the initial position.");
-
-        // Check if the diagram notes contain the name (as it seems to be a concatenated string with the name)
         assertEquals(initialName + "\n", diagramNotes, "The diagram notes should contain the name of the usecase.");
 
         // Step 5: Update the name and position of the usecase object
@@ -42,10 +46,7 @@ class UsecaseTest {
         usecase.setPosition(newPosition);
 
         // Step 6: Assert that the updated name and position are correctly set
-        // Check if the name is updated
         Assertions.assertEquals(newName, usecase.getName(), "The name should be updated.");
-
-        // Check if the position is updated
         Assertions.assertEquals(newPosition, usecase.getPosition(), "The position should be updated.");
 
         // Step 7: Assert that the diagram notes are updated with the new name

@@ -4,21 +4,33 @@ import org.junit.jupiter.api.Test;  // Importing JUnit's Test annotation
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;  // Importing assertion method to check if code throws an exception
 
-// Test class for the 'CodeGenerator' class or functionality (though it's not referenced directly)
+/**
+ * Test class for the 'CodeGenerator' functionality.
+ * This test verifies that the 'generate' method executes without throwing any exceptions.
+ */
 class CodeGeneratorTest {
 
-    // Test method to verify that the 'generate' method does not throw any exception when called
+    /**
+     * Test to ensure the 'generate' method runs without throwing exceptions.
+     */
     @Test
-    void testDisplay() {
-        // Creating an instance of the test class (this test class is a placeholder for the code generator class)
+    void testGenerateMethodDoesNotThrowException() {
+        // Create an instance of CodeGenerator (replace this with actual implementation when available)
         CodeGeneratorTest cg = new CodeGeneratorTest();
 
-        // Verifying that the 'generate' method does not throw any exception
-        assertDoesNotThrow(cg::generate, "The display method should not throw an exception.");
+        // Assert that the 'generate' method does not throw any exception
+        assertDoesNotThrow(cg::generate, "The generate method should not throw an exception.");
     }
 
-    // Private generate method which currently returns null (this would be the code generator method to test)
+    /**
+     * Placeholder method for 'generate', representing the functionality to be tested.
+     * Replace this method with the actual 'generate' method from the CodeGenerator class.
+     *
+     * @return Placeholder return value (currently null).
+     */
     private Object generate() {
-        return null;  // Placeholder behavior for demonstration
+        // This is a placeholder method.
+        // Replace with the actual logic or invocation of CodeGenerator's generate method.
+        return null;
     }
 }
