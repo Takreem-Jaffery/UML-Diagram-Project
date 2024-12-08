@@ -1,6 +1,6 @@
 # UML-Diagram-Project
 # Description
-**UML-Diagram-Project** is a comprehensive UML diagram tool that supports the creation and modification of UML Class Diagrams and UML Use Case Diagrams. It provides users with the ability to freely draw, drag, move, edit, and rename diagram components, as well as save and load UML projects. This tool features serialization and deserialization for project persistence and offers an option to generate Java code from a JSON file. Additionally, users can save diagrams in various image formats, including PNG and JPEG.
+**UML-Diagram-Project** is a comprehensive UML diagram tool that supports the creation and modification of UML Class Diagrams and UML Use Case Diagrams. It provides users with the ability to freely draw, drag, move, edit, and rename diagram components, as well as save and load UML projects. This tool features serialization and deserialization for project persistence and offers an option to generate Java code from a Class Diagram JSON file. Additionally, users can save diagrams in various image formats, including PNG and JPEG.
 
 **Table of Contents**
 - Installation
