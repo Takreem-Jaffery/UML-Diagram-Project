@@ -1,4 +1,4 @@
-package Test;
+package Tests;
 
 import business.UseCaseDiagram;
 import org.junit.jupiter.api.Assertions;
