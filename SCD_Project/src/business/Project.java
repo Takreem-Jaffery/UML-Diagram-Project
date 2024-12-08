@@ -84,8 +84,8 @@ public class Project {
         }
 
     }
-    public void saveUCDProject(ArrayList<Usecase> usecases, ArrayList<Actor> actors, ArrayList<UseCaseArrow> arrows, JFrame ui){
-        ArrayList<Component> components=generateUCDComponents(usecases,actors,arrows);
+    public void saveUCDProject(ArrayList<Usecase> usecases, ArrayList<Actor> actors, ArrayList<UseCaseArrow> arrows,ArrayList<UCDSystem> systems, JFrame ui){
+        ArrayList<Component> components=generateUCDComponents(usecases,actors,arrows,systems);
 
         //prompt user for project name
         String projectName = JOptionPane.showInputDialog(
@@ -136,11 +136,12 @@ public class Project {
         }
 
     }
-    public ArrayList<Component> generateUCDComponents(ArrayList<Usecase> usecases, ArrayList<Actor> actors, ArrayList<UseCaseArrow> arrows){
+    public ArrayList<Component> generateUCDComponents(ArrayList<Usecase> usecases, ArrayList<Actor> actors, ArrayList<UseCaseArrow> arrows, ArrayList<UCDSystem> systems){
         ArrayList<Component>components=new ArrayList<>();
         components.addAll(usecases);
         components.addAll(actors);
         components.addAll(arrows);
+        components.addAll(systems);
         return components;
     }
     public ArrayList<Component> generateCDComponents(ArrayList<Class> classes, ArrayList<Association> associations, ArrayList<Comment> comments){

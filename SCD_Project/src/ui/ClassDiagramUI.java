@@ -244,8 +244,8 @@ public class ClassDiagramUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    //String currentDirectory = System.getProperty("user.dir");
-                    //System.out.println("Current working directory: " + currentDirectory);
+                    //String currentDirectory = UCDSystem.getProperty("user.dir");
+                    //UCDSystem.out.println("Current working directory: " + currentDirectory);
 
                     //get user to select json file to convert
                     JFileChooser fileChooser = new JFileChooser();
@@ -353,7 +353,7 @@ public class ClassDiagramUI extends JFrame {
                     if (previousText[0].isEmpty()) {
                         newText = currentText[0].substring(previousText[0].length());
                     } else {
-                        //System.out.println("In here");
+                        //UCDSystem.out.println("In here");
                         newText = currentText[0].substring(previousText[0].length() + 1);
                     }
                     System.out.println("New text entered: " + newText);

@@ -172,7 +172,7 @@ public class CodeConversionRenewed {
 //            }
 //        }
 //
-//        System.err.println("No class found at position (" + x + ", " + y + ")");
+//        UCDSystem.err.println("No class found at position (" + x + ", " + y + ")");
 //        return null;
 //    }
     private String extractName(JsonObject pointObject) {
@@ -274,7 +274,7 @@ public class CodeConversionRenewed {
 //    ClassInfo targetClass = classInfoMap.get(relationship.targetName);
 //
 //    if (sourceClass == null || targetClass == null) {
-//        System.err.println("Invalid relationship: " + relationship.sourceName + " -> " + relationship.targetName);
+//        UCDSystem.err.println("Invalid relationship: " + relationship.sourceName + " -> " + relationship.targetName);
 //        return;
 //    }
 //
@@ -292,7 +292,7 @@ public class CodeConversionRenewed {
 //            sourceClass.addField(targetClass.className.toLowerCase(), targetClass.className);
 //            break;
 //        default:
-//            System.err.println("Unknown relationship type: " + relationship.type);
+//            UCDSystem.err.println("Unknown relationship type: " + relationship.type);
 //    }
 //}
 

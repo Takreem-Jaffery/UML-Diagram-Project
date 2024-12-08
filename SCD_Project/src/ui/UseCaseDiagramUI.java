@@ -4,9 +4,11 @@ import business.Actor;
 import business.Project;
 import business.UseCaseArrow;
 import business.Usecase;
+import business.UCDSystem;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -30,6 +32,7 @@ public class UseCaseDiagramUI extends JFrame {
     ArrayList<business.Usecase> usecases;
     ArrayList<business.Actor> actors;
     ArrayList<UseCaseArrow> arrows;
+    ArrayList<UCDSystem> systems;
     Project project;
 
     JButton saveImage;
@@ -48,6 +51,7 @@ public class UseCaseDiagramUI extends JFrame {
         arrows = new ArrayList<>();
         actors=new ArrayList<>();
         usecases=new ArrayList<>();
+        systems=new ArrayList<UCDSystem>();
         project=new Project();
 
         saveImage=new JButton("\uD83D\uDDBC\uFE0F Save Image");
@@ -200,7 +204,7 @@ public class UseCaseDiagramUI extends JFrame {
                     else if(components.get(i).getClassType()=="Actor")
                         actors.add((Actor)components.get(i));
                     else
-                        continue;
+                        systems.add((UCDSystem)components.get(i));
                     //not a component of uml class diagram
                 }
                 ArrayList<UMLComponent> comps=new ArrayList<UMLComponent>();
@@ -221,6 +225,13 @@ public class UseCaseDiagramUI extends JFrame {
                     c.name=actors.get(i).getName();
                     comps.add(c);
                 }
+                for(int i=0;i<systems.size();i++){
+                    UMLComponent c=new UMLComponent("System",systems.get(i).getPosition());
+                    c.name=systems.get(i).getName();
+                    c.height=systems.get(i).getHeight();
+                    c.width=systems.get(i).getWidth();
+                    comps.add(c);
+                }
                 canvas.components=comps;
                 canvas.repaint();
             }
@@ -238,7 +249,7 @@ public class UseCaseDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUI.this);
+                        project.saveUCDProject(usecases,actors,arrows,systems,UseCaseDiagramUI.this);
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();
@@ -271,10 +282,10 @@ public class UseCaseDiagramUI extends JFrame {
 //                    if (previousText[0].isEmpty()) {
 //                        newText = currentText[0].substring(previousText[0].length());
 //                    } else {
-//                        //System.out.println("In here");
+//                        //UCDSystem.out.println("In here");
 //                        newText = currentText[0].substring(previousText[0].length() + 1);
 //                    }
-//                    System.out.println("New text entered: " + newText);
+//                    UCDSystem.out.println("New text entered: " + newText);
 //                    if (newText.equals("--")) {
 //                        classDrawPartition();
 //                    }
@@ -344,7 +355,7 @@ public class UseCaseDiagramUI extends JFrame {
                     );
 
                     if (choice == JOptionPane.YES_OPTION) {
-                        project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUI.this);
+                        project.saveUCDProject(usecases,actors,arrows,systems,UseCaseDiagramUI.this);
                         frame.dispose();
                     } else if (choice == JOptionPane.NO_OPTION) {
                         frame.dispose();
@@ -384,11 +395,11 @@ public class UseCaseDiagramUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            project.saveUCDProject(usecases,actors,arrows,UseCaseDiagramUI.this);
+            project.saveUCDProject(usecases,actors,arrows,systems,UseCaseDiagramUI.this);
         }
     }
 
-    // Canvas to display draggable, editable, and deletable components
+    //Canvas to display draggable, editable, and deletable components
     public class UMLCanvas extends JPanel {
         private ArrayList<UMLComponent> components;
         private UMLComponent selectedComponent;
@@ -410,7 +421,10 @@ public class UseCaseDiagramUI extends JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     selectComponentAt(e.getPoint());
-                    if (selectedComponent != null && (selectedComponent.type != "Usecase" && selectedComponent.type != "Actor") && selectedComponent.isInResizeHandle(e.getPoint())) {
+                    if (selectedComponent != null && (selectedComponent.type != "Usecase" && selectedComponent.type != "Actor" && selectedComponent.type!="System") && selectedComponent.isInResizeHandle(e.getPoint())) {
+                        resizing = true;
+                    }
+                    else if (selectedComponent != null && selectedComponent.type.equals("System") && selectedComponent.isInResizeHandle(e.getPoint())) {
                         resizing = true;
                     }
                 }
@@ -418,6 +432,7 @@ public class UseCaseDiagramUI extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     resizing = false;
+                    selectedComponent=null;
                     if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null) {
                         int response = JOptionPane.showConfirmDialog(
                                 UMLCanvas.this,
@@ -431,6 +446,8 @@ public class UseCaseDiagramUI extends JFrame {
                                 usecases.remove(selectedComponent.id);
                             else if(selectedComponent.type=="Actor")
                                 actors.remove(selectedComponent.id);
+                            else if(selectedComponent.type=="System")
+                                systems.remove(selectedComponent.id);
                             else
                                 arrows.remove(selectedComponent.id);
                             selectedComponent = null;
@@ -466,7 +483,7 @@ public class UseCaseDiagramUI extends JFrame {
                         if (resizing) {
                             selectedComponent.resize(e.getPoint());
                         } else {
-                            if (Objects.equals(selectedComponent.type, "Usecase") || Objects.equals(selectedComponent.type, "Actor"))
+                            if (Objects.equals(selectedComponent.type, "Usecase") || Objects.equals(selectedComponent.type, "Actor") || selectedComponent.type.equals("System"))
                                 selectedComponent.move(e.getPoint());
                             else
                                 selectedComponent.moveLine(e.getPoint());
@@ -479,7 +496,7 @@ public class UseCaseDiagramUI extends JFrame {
 
         // Create a new component at a default position
         public void createNewComponent(String type) {
-            if (type == "Usecase" || type == "Actor") {
+            if (type == "Usecase" || type == "Actor" || type=="System") {
                 UMLComponent comp = new UMLComponent(type, new Point(100, 100));
                 components.add(comp);
                 if (type == "Usecase") {
@@ -488,11 +505,18 @@ public class UseCaseDiagramUI extends JFrame {
                     int i = usecases.indexOf(c);
                     comp.id = i;
                 }
-                else{
+                else if(type=="Actor"){
                     Actor c=new Actor();
                     c.setPosition(new Point(100,100));
                     actors.add(c);
                     int i=actors.indexOf(c);
+                    comp.id=i;
+                }
+                else{
+                    UCDSystem s=new UCDSystem();
+                    s.setPosition(new Point(100,100));
+                    systems.add(s);
+                    int i=systems.indexOf(s);
                     comp.id=i;
                 }
             } else {
@@ -510,10 +534,10 @@ public class UseCaseDiagramUI extends JFrame {
         // Select a component at a specific point
         private void selectComponentAt(Point point) {
             for (UMLComponent component : components) {
-                if ((Objects.equals(component.type, "Usecase") || Objects.equals(component.type, "Actor")) && component.contains(point)) {
+                if ((Objects.equals(component.type, "Usecase") || Objects.equals(component.type, "Actor") || Objects.equals(component.type, "System")) && component.contains(point)) {
                     selectedComponent = component;
                     return;
-                } else if ((component.type != "Usecase" && component.type != "Actor") && component.containsLine(point)) {
+                } else if ((component.type != "Usecase" && component.type != "Actor" && component.type!="System") && component.containsLine(point)) {
 
                     selectedComponent = component;
                     return;
@@ -589,6 +613,7 @@ public class UseCaseDiagramUI extends JFrame {
             else if (y < 230) return "Arrow";
             else if (y < 280) return "Include";
             else if (y < 330) return "Extend";
+            else if (y < 380) return "System";
             return null;
         }
 
@@ -603,31 +628,31 @@ public class UseCaseDiagramUI extends JFrame {
             int x = 20, y = 10;
             g.setColor(Color.BLACK);
 
-            // Usecase bubble
+            //Usecase bubble
             g.drawOval(x, y, 100, 50);
             FontMetrics fm = g.getFontMetrics();
             int textWidth = fm.stringWidth("Usecase");
             int textHeight = fm.getHeight();
-            g.drawString("Usecase", (100 - textWidth) / 2+10, (50 + textHeight / 2) / 2+10);
+            g.drawString("Usecase", (100 - textWidth) / 2 + 10, (50 + textHeight / 2) / 2 + 10);
             //g.drawString("Usecase", x + 35, y + 10);
 
-            // Actor
-            y+=60;
-            x+=50;
+            //Actor
+            y += 60;
+            x += 50;
             g.drawOval(x - 15, y, 30, 30);  // Head
-            g.drawLine(x, y+30, x, y+60);   // Body
-            g.drawLine(x - 20, y+45, x + 20, y+45);  // Arms
-            g.drawLine(x, y+60, x - 20, y+90);  // Left leg
-            g.drawLine(x, y+60, x + 20, y+90);  // Right leg
+            g.drawLine(x, y + 30, x, y + 60);   // Body
+            g.drawLine(x - 20, y + 45, x + 20, y + 45);  // Arms
+            g.drawLine(x, y + 60, x - 20, y + 90);  // Left leg
+            g.drawLine(x, y + 60, x + 20, y + 90);  // Right leg
             fm = g.getFontMetrics();
             textWidth = fm.stringWidth("Actor");
-            g.drawString("Actor", x - textWidth / 2, y+110);
+            g.drawString("Actor", x - textWidth / 2, y + 110);
 //
 //            g.drawLine(x, y + 25, x + 100, y + 25);
 //            g.drawString("Association", x + 35, y + 10);
 
-            // Arrow
-            x-=50;
+            //Arrow
+            x -= 50;
             y += 120;
             Graphics2D g2d = (Graphics2D) g;
             g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
@@ -635,7 +660,7 @@ public class UseCaseDiagramUI extends JFrame {
             g.drawLine(100, y, 100 - 10, y - 10);
             g.drawLine(100, y, 100 - 10, y + 10);
 
-            // Include
+            //Include
             y += 50;
             g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
             g.drawLine(x, y, 100, y);
@@ -646,7 +671,7 @@ public class UseCaseDiagramUI extends JFrame {
             textWidth = fm.stringWidth("include");
             g.drawString("<<include>>", (getWidth() - textWidth) / 2, y - 5);
 
-            // Extend
+            //Extend
             y += 50;
             g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
             g.drawLine(x, y, 100, y);
@@ -657,10 +682,15 @@ public class UseCaseDiagramUI extends JFrame {
             textWidth = fm.stringWidth("extend");
             g.drawString("<<extend>>", (getWidth() - textWidth) / 2, y - 5);
 
+            //UCDSystem
+            y += 60;
+            g2d.setStroke(new BasicStroke(1));
+            g.drawRect(x, y, 100, 50);
+            g.drawString("System", x + 35, y + 30);
+
         }
     }
-
-    // UML Component class
+    //UML Component class
     public class UMLComponent {
         private String type;
         private Point position;
@@ -668,6 +698,8 @@ public class UseCaseDiagramUI extends JFrame {
         private Point start;
         private Point end;
         public int id;
+        private int width;
+        private int height;
 
         public UMLComponent(String type, Point position) {
             this.type = type;
@@ -675,6 +707,8 @@ public class UseCaseDiagramUI extends JFrame {
             this.name = type;
             this.start = null;
             this.end = null;
+            this.width = 150; // Default width for UCDSystem
+            this.height = 100; // Default height for UCDSystem
         }
 
         public UMLComponent(String type, Point start, Point end) {
@@ -688,12 +722,17 @@ public class UseCaseDiagramUI extends JFrame {
         public void move(Point newPoint) {
             if(type=="Usecase")
                 position = new Point(newPoint.x - 50, newPoint.y - 25); // Center the drag
+            else if (type.equals("System"))
+                position = new Point(newPoint.x - width / 2, newPoint.y - height / 2);
             else
                 position=new Point(newPoint.x,newPoint.y-50);
+
             if(type=="Usecase")
                 usecases.get(id).setPosition(position);
-            else
+            else if(type=="Actor")
                 actors.get(id).setPosition(position);
+            else if(type=="System")
+                systems.get(id).setPosition(position);
         }
 
         public void moveLine(Point newPoint) {
@@ -709,6 +748,9 @@ public class UseCaseDiagramUI extends JFrame {
             if(type=="Usecase")
                 return point.x >= position.x && point.x <= position.x + 100
                     && point.y >= position.y && point.y <= position.y + 50;
+            else if (type.equals("System"))
+                return point.x >= position.x && point.x <= position.x + width
+                        && point.y >= position.y && point.y <= position.y + height;
             else
                 return point.x >= position.x-20 && point.x <= position.x + 20
                         && point.y >= position.y && point.y <= position.y + 110;
@@ -720,13 +762,27 @@ public class UseCaseDiagramUI extends JFrame {
         }
 
         public boolean isInResizeHandle(Point point) {
+            if (type.equals("System")) {
+                //bottom-right corner is the resize handle (10x10 px area)
+                int handleSize = 10;
+                Rectangle resizeHandle = new Rectangle(position.x + width - handleSize, position.y + height - handleSize, handleSize, handleSize);
+                return resizeHandle.contains(point);
+            }
             return new Rectangle(end.x - 5, end.y - 5, 10, 10).contains(point);
         }
 
         public void resize(Point point) {
-            end.setLocation(point);
-            UseCaseArrow a=arrows.get(id);
-            a.setEndPoint(end);
+            if(type=="System"){
+                width = Math.max(50, point.x - position.x); // Minimum width = 50
+                height = Math.max(30, point.y - position.y); // Minimum height = 30
+                systems.get(id).setWidth(width);
+                systems.get(id).setHeight(height);
+            }
+            else {
+                end.setLocation(point);
+                UseCaseArrow a = arrows.get(id);
+                a.setEndPoint(end);
+            }
         }
 
         public void setName(String name) {
@@ -794,6 +850,19 @@ public class UseCaseDiagramUI extends JFrame {
                     fm = g2d.getFontMetrics();
                     textWidth = fm.stringWidth("extend");
                     g.drawString("<<extend>>",(start.x + end.x) / 2, (start.y + end.y) / 2 - 5);
+                    break;
+                case "System":
+                    g2d.setStroke(new BasicStroke(1));
+                    g.drawRect(x, y, width, height); // Draw system rectangle
+
+                    // Calculate top-center position for the name
+                    int textX = x + (width - textWidth) / 2; // Horizontally center the text
+                    int textY = y + textHeight;              // Place text just below the top border
+
+                    g.drawString(name, textX, textY); // Draw the name at the top-center
+
+                    // Draw resize handle at the bottom-right corner
+                    g.fillRect(x + width - 10, y + height - 10, 10, 10);
                     break;
             }
 
