@@ -5,17 +5,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.awt.*;
 
 public class Comment implements Component{
+    String name;
     String commentText;
     Point position;
 
-    public Comment(String text, Point p){
+    public Comment(String name, String text, Point p){
+        this.name=name;
         commentText=text;
         position=p;
     }
-
+    public Comment(String text, Point p){
+        this.name="Comment...";
+        commentText=text;
+        position=p;
+    }
     public Comment() {
+        name="Comment...";
         commentText="";
         position=null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCommentText() {

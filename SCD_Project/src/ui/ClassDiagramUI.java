@@ -231,7 +231,8 @@ public class ClassDiagramUI extends JFrame {
                 }
                 for(int i=0;i<comments.size();i++){
                     UMLComponent c=new UMLComponent("Comment",comments.get(i).getPosition());
-                    c.name=comments.get(i).getCommentText();
+                    c.text=comments.get(i).getCommentText();
+                    c.name=comments.get(i).getName();
                     comps.add(c);
                 }
                 canvas.components=comps;
@@ -506,7 +507,7 @@ public class ClassDiagramUI extends JFrame {
 
                 if (Objects.equals(component.name, firstLine)) {
                     //draw a line
-                    // Update the number of partitions
+                    //update the number of partitions
                     if (component.noOfPartitions > currentPartitions) {
                         component.noOfPartitions = currentPartitions;
                         classes.get(component.id).setNoOfPartitions(currentPartitions);
@@ -520,7 +521,7 @@ public class ClassDiagramUI extends JFrame {
         }
     }
 
-    // Canvas to display draggable, editable, and deletable components
+    //Canvas to display draggable, editable, and deletable components
     public class UMLCanvas extends JPanel {
         private ArrayList<UMLComponent> components;
         private UMLComponent selectedComponent;
@@ -537,7 +538,7 @@ public class ClassDiagramUI extends JFrame {
             selectedComponent = null;
             resizing = false;
 
-            // Add mouse listeners for interaction
+            //Add mouse listeners for interaction
             this.addMouseListener(new MouseAdapter() {
 //                @Override
 //                public void mousePressed(MouseEvent e) {
@@ -580,7 +581,7 @@ public class ClassDiagramUI extends JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     selectComponentAt(e.getPoint());
-                    // selectComponentAt(e.getPoint());
+                    //selectComponentAt(e.getPoint());
 
                     if (SwingUtilities.isRightMouseButton(e) && selectedComponent != null && (selectedComponent.type == "Class" || selectedComponent.type == "Comment")) {
                         showContextMenu(e);
@@ -589,19 +590,19 @@ public class ClassDiagramUI extends JFrame {
                     if (selectedComponent != null && (selectedComponent.type != "Class" && selectedComponent.type != "Comment") && selectedComponent.isInResizeHandle(e.getPoint())) {
                         resizing = true;
                     }
-                    // Check if right-click is on an attribute or method
+                    //Check if right-click is on an attribute or method
                     if (selectedComponent != null && selectedComponent.type=="Class") {
                         // Right-click on attribute
                         if (selectedComponent.containsAttributeOrMethod(e.getPoint(), "attribute")) {
-                            // Show context menu to edit attribute
+                            //Show context menu to edit attribute
                             showEditAttributeMenu(e);
                         }
-                        // Right-click on method
+                        //Right-click on method
                         else if (selectedComponent.containsAttributeOrMethod(e.getPoint(), "method")) {
-                            // Show context menu to edit method
+                            //Show context menu to edit method
                             showEditMethodMenu(e);
                         }
-                        // Handle class or comment specific logic
+                        //Handle class or comment specific logic
                         else if (SwingUtilities.isRightMouseButton(e) && (selectedComponent.type.equals("Class") || selectedComponent.type.equals("Comment"))) {
                             showContextMenu(e);
                         }
@@ -646,19 +647,20 @@ public class ClassDiagramUI extends JFrame {
         private void showContextMenu(MouseEvent e) {
             JPopupMenu menu = new JPopupMenu();
 
-            // Simple Edit option (no submenu) for "Comment" type
+            //Simple Edit option (no submenu) for "Comment" type
             if (Objects.equals(selectedComponent.getType(), "Comment")) {
                 JMenuItem editComment = new JMenuItem("Edit");
                 editComment.addActionListener(ev -> {
                     String newContent = JOptionPane.showInputDialog("Edit comment text:");
                     if (newContent != null) {
-                        selectedComponent.setCommentText(newContent); // Assuming setCommentText exists for comments
+                        selectedComponent.setCommentText(newContent);
+                        comments.get(selectedComponent.id).setCommentText(newContent);
                         repaint();
                     }
                 });
                 menu.add(editComment);
             } else {
-                // Edit menu for Class and other non-Comment types
+                //Edit menu for Class and other non-Comment types
                 JMenu editMenu = new JMenu("Edit");
                 JMenuItem addAttribute = new JMenuItem("Add Attribute");
                 JMenuItem addMethod = new JMenuItem("Add Method");
@@ -698,7 +700,7 @@ public class ClassDiagramUI extends JFrame {
                 menu.add(editMenu);
             }
 
-            // Rename option
+            //Rename option
             JMenuItem rename = new JMenuItem("Rename");
             rename.addActionListener(ev -> {
                 String newName = JOptionPane.showInputDialog("Enter new name:");
@@ -708,7 +710,7 @@ public class ClassDiagramUI extends JFrame {
                 }
             });
 
-            // Delete option
+            //Delete option
             JMenuItem delete = new JMenuItem("Delete");
             delete.addActionListener(ev -> {
                 int response = JOptionPane.showConfirmDialog(
@@ -731,10 +733,10 @@ public class ClassDiagramUI extends JFrame {
             menu.add(rename);
             menu.add(delete);
 
-            // Display the menu
+            //Display the menu
             menu.show(this, e.getX(), e.getY());
         }
-        // Create a new component at a default position
+        //Create a new component at a default position
         public void createNewComponent(String type) {
             if (type == "Class" || type == "Comment") {
                 UMLComponent comp = new UMLComponent(type, new Point(100, 100));
@@ -1043,7 +1045,7 @@ public class ClassDiagramUI extends JFrame {
             }
             else if(type=="Comment") {
                 Comment c=comments.get(id);
-                c.setCommentText(name);
+                c.setName(name);
             }else{
                 Association a=associations.get(id);
                 a.setName(name);
