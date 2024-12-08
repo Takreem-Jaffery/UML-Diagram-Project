@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b964b9-7844-4a9d-b67b-23621621525e" name="Changes" comment="" />
+    <list default="true" id="29b964b9-7844-4a9d-b67b-23621621525e" name="Changes" comment="Updated with comments">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ActorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ActorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/AssociationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/AssociationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ClassDiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ClassDiagramTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ClassTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ClassTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/CodeGeneratorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/CodeGeneratorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/CommentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/CommentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ComponentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ComponentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/DiagramTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/DiagramTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ModelTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCD_Project/src/Test/ProjectTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SCD_Project/src/Test/ProjectTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ActorTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ActorTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/AssociationTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/AssociationTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ClassDiagramTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ClassDiagramTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/CodeGeneratorTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/CodeGeneratorTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/CommentTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/CommentTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ComponentTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ComponentTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/DiagramTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/DiagramTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ModelTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SCD_Project_Git/Test/ModelTest.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,12 +34,40 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Testing" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;aneezajunaid&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Takreem-Jaffery/UML-Diagram-Project&quot;,
+    &quot;accountId&quot;: &quot;28b82537-6951-4073-aaf2-3955d71e316b&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;Takreem-Jaffery&quot;,
+    &quot;repository&quot;: &quot;UML-Diagram-Project&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -30,13 +78,42 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.ClassDiagramUI.executor": "Run",
     "Application.ClassDiagramUISelectable.executor": "Run",
+    "Application.UseCaseDiagramUI.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.ActorTest.executor": "Run",
+    "JUnit.AssociationTest.executor": "Run",
+    "JUnit.ClassDiagramTest.executor": "Run",
+    "JUnit.ClassTest.executor": "Run",
+    "JUnit.CodeGeneratorTest.executor": "Run",
+    "JUnit.CommentTest.executor": "Run",
+    "JUnit.ComponentTest.executor": "Run",
+    "JUnit.DiagramTest.executor": "Run",
+    "JUnit.ModelTest.executor": "Run",
+    "JUnit.ProjectTest.executor": "Run",
+    "JUnit.UseCaseArrowTest.executor": "Run",
+    "JUnit.UseCaseDiagramTest.executor": "Run",
+    "JUnit.UsecaseTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "#1 on Testing",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Dell/IdeaProjects/SCD_Project_Git/SCD_Project"
+    "last_opened_file_path": "C:/Users/Dell/IdeaProjects/SCD_Project_Git/SCD_Project",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="business" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -46,6 +123,27 @@
       <option name="presentableId" value="Default" />
       <updated>1732641167295</updated>
     </task>
+    <task id="LOCAL-00001" summary="Updated with comments">
+      <option name="closed" value="true" />
+      <created>1733658509611</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1733658509611</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Updated with comments">
+      <option name="closed" value="true" />
+      <created>1733658603524</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1733658603524</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Updated with comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated with comments" />
   </component>
 </project>
