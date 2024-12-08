@@ -58,13 +58,11 @@ Once the UML-Diagram-Project is running, you can:
 
 **- Customizable Components:** Add, edit, or rename components in diagrams freely.
 
-**- User-friendly Interface:** Easy-to-use interface built for both novice and experienced users of UML.
+**- User-friendly Interface:** Easy-to-use interface built for both novice and experienced users of UML inspired by UMLetino and StarUML.
 
 # Technologies Used
 
 **- Java:** The project is built using Java with a GUI based on Java Swing.
-
-**- UMLLETINO:** The UML model used in the project is based on UMLLETINO, which supports both Class and Use Case diagrams.
 
 **- Serialization/Deserialization:** Used for saving and loading diagrams in binary or JSON formats.
 
