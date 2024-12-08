@@ -1,6 +1,6 @@
 package business;
 
-import java.awt.*;
+import java.awt.Point;
 
 /**
  * Represents an Association in a business application. An Association connects

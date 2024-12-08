@@ -3,7 +3,7 @@ package business;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
