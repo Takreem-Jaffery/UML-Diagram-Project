@@ -1,4 +1,4 @@
-package Test;
+package Tests;
 
 import business.*;
 import business.Class;

@@ -1,4 +1,4 @@
-package Test;
+package Tests;
 
 import business.Association;
 import org.junit.jupiter.api.Assertions;
